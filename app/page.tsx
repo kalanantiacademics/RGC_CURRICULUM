@@ -200,7 +200,7 @@ export default function Home() {
       };
 
   return (
-    <div className="min-h-screen bg-[#020617] text-white font-sans selection:bg-brand-yellow/30 overflow-hidden relative">
+    <div className="min-h-screen w-screen bg-[#020617] text-white font-sans selection:bg-brand-yellow/30 overflow-hidden relative">
         
         {/* Render Modal */}
         <SessionDetailModal 
