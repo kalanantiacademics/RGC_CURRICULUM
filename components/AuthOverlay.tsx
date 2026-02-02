@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
 import { Loader2, AlertCircle } from "lucide-react";
 import { API_URL } from "@/lib/api";
 
@@ -14,6 +14,22 @@ export function AuthOverlay({ onLogin }: AuthOverlayProps) {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [isVisible, setIsVisible] = useState(true);
+  const shouldReduceMotion = useReducedMotion();
+
+  const overlayMotionProps = shouldReduceMotion
+    ? {}
+    : {
+        initial: { opacity: 0 },
+        animate: { opacity: 1 },
+        exit: { opacity: 0 },
+      };
+
+  const cardMotionProps = shouldReduceMotion
+    ? {}
+    : {
+        initial: { scale: 0.9, opacity: 0 },
+        animate: { scale: 1, opacity: 1 },
+      };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -52,14 +68,11 @@ export function AuthOverlay({ onLogin }: AuthOverlayProps) {
     <AnimatePresence>
       {isVisible && (
         <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
+          {...overlayMotionProps}
           className="fixed inset-0 z-[100] flex items-center justify-center bg-[#020617]/80 backdrop-blur-xl p-4"
         >
           <motion.div
-            initial={{ scale: 0.9, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
+            {...cardMotionProps}
             className="w-full max-w-md bg-[#0F172A] border border-white/10 rounded-3xl p-8 shadow-2xl relative overflow-hidden"
           >
              {/* Background Decoration */}
@@ -71,6 +84,8 @@ export function AuthOverlay({ onLogin }: AuthOverlayProps) {
               <img 
                 src="https://cdn-web-2.ruangguru.com/landing-pages/assets/545c0426-169c-406f-8775-93afcacef50a.png" 
                 alt="Kalananti" 
+                loading="lazy"
+                decoding="async"
                 className="h-12 mx-auto mb-6 object-contain"
               />
               <h2 className="text-2xl font-bold text-white mb-2">Teacher Login</h2>
