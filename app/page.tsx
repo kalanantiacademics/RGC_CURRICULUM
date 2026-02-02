@@ -67,9 +67,12 @@ export default function Home() {
     "roblox studio": { age: "10-15 Tahun", order: 4 },
     "roblox": { age: "10-15 Tahun", order: 4 },
     "diy robotik": { age: "7-12 Tahun", order: 5 },
-    "diy robotic": { age: "7-12 Tahun", order: 5 }, // English variation
+    "diy robotic": { age: "7-12 Tahun", order: 5 },
     "micro:bit robotic": { age: "7-15 Tahun", order: 6 },
     "microbit robotic": { age: "7-15 Tahun", order: 6 },
+    "microbit": { age: "7-15 Tahun", order: 6 },
+    "micro:bit": { age: "7-15 Tahun", order: 6 },
+    "yahboom": { age: "7-15 Tahun", order: 6 },
     "app inventor": { age: "13-15 Tahun", order: 7 },
     "python": { age: "15-18 Tahun", order: 8 },
   };
