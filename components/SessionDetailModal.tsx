@@ -58,10 +58,35 @@ export function SessionDetailModal({ session, isOpen, onClose }: SessionDetailMo
 
   const closePreview = () => setPreviewUrl(null);
 
-  // Helper to safely split links
-  const getLinks = (str: string | undefined) => {
+  // Helper to safely split links and extract labels
+  const getLinks = (str: string | undefined): { url: string; label: string }[] => {
       if (!str || str === "—") return [];
-      return str.split(';').map(s => s.trim()).filter(Boolean);
+      
+      const parts = str.split(';').map(s => s.trim()).filter(Boolean);
+      
+      return parts.map((part, index) => {
+          // Check for "Label: URL" pattern
+          const firstColonIndex = part.indexOf(':');
+          
+          if (firstColonIndex !== -1) {
+              const potentialLabel = part.substring(0, firstColonIndex).trim();
+              const potentialUrl = part.substring(firstColonIndex + 1).trim();
+              
+              // 1. Check if potential label is a reserved protocol
+              const isProtocol = /^(http|https|ftp|mailto)$/i.test(potentialLabel);
+              
+              // 2. Check if potential label contains spaces (protocols never have spaces)
+              const hasSpaces = potentialLabel.includes(' ');
+              
+              // If it has spaces OR it's not a protocol, treat it as a custom label
+              if ((hasSpaces || !isProtocol) && potentialUrl.length > 0) {
+                  return { url: potentialUrl, label: potentialLabel };
+              }
+          }
+          
+          // Fallback: No label found
+          return { url: part, label: parts.length > 1 ? `Link #${index + 1}` : 'Open Link' };
+      });
   };
 
   return (
@@ -386,7 +411,7 @@ function MultiLinkGroup({
     highlight = false 
 }: { 
     label: string, 
-    links: string[], 
+    links: { url: string; label: string }[], 
     icon: any, 
     onClick?: (url: string) => void, 
     customAction?: (url: string) => void,
@@ -413,19 +438,20 @@ function MultiLinkGroup({
                 <span className="text-xs font-bold uppercase tracking-wider">{label}</span>
             </div>
             <div className="flex flex-wrap gap-2">
-                {links.map((url, i) => (
+                {links.map((link, i) => (
                     <button 
                         key={i}
-                        onClick={() => handleClick(url)}
+                        onClick={() => handleClick(link.url)}
                         className={cn(
                             "flex-1 min-w-[120px] px-4 py-3 rounded-lg text-sm font-semibold transition-all flex items-center justify-center gap-2 border",
                             variant === "secondary" 
                                 ? "bg-indigo-500/10 hover:bg-indigo-500/20 text-indigo-300 border-indigo-500/20 hover:border-indigo-500/40"
                                 : "bg-zinc-800 hover:bg-zinc-700 text-zinc-300 hover:text-white border-zinc-700 hover:border-zinc-500"
                         )}
+                        title={link.url}
                     >
-                        <span>Open {links.length > 1 ? `#${i+1}` : ''}</span>
-                        <ExternalLink className="w-3 h-3 opacity-50" />
+                        <span className="truncate max-w-[200px]">{link.label}</span>
+                        <ExternalLink className="w-3 h-3 opacity-50 shrink-0" />
                     </button>
                 ))}
             </div>
