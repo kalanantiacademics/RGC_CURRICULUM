@@ -1,6 +1,6 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { motion, useReducedMotion } from "framer-motion";
 import { ArrowRight, ChevronRight, Zap } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -10,6 +10,7 @@ interface WelcomeScreenProps {
 }
 
 export function WelcomeScreen({ programs, onSelect }: WelcomeScreenProps) {
+  const shouldReduceMotion = useReducedMotion();
   // Asset URLs provided
   const ASSETS = {
     rocket: "https://cdn-web-2.ruangguru.com/landing-pages/assets/6efdf045-19f7-4d90-8a14-cf797238f73d.png",
@@ -29,38 +30,74 @@ export function WelcomeScreen({ programs, onSelect }: WelcomeScreenProps) {
       </div>
 
       {/* Floating Elements */}
-      <motion.img
-        src={ASSETS.rocket}
-        alt="Rocket"
-        className="absolute top-10 right-10 w-32 md:w-64 z-10 opacity-90 drop-shadow-[0_0_30px_rgba(253,128,36,0.6)]"
-        animate={{
-          y: [-20, 20, -20],
-          rotate: [0, 5, -5, 0],
-        }}
-        transition={{
-          duration: 6,
-          repeat: Infinity,
-          ease: "easeInOut",
-        }}
-      />
+      {shouldReduceMotion ? (
+        <img
+          src={ASSETS.rocket}
+          alt="Rocket"
+          loading="lazy"
+          decoding="async"
+          className="absolute top-10 right-10 w-32 md:w-64 z-10 opacity-90 drop-shadow-[0_0_30px_rgba(253,128,36,0.6)]"
+        />
+      ) : (
+        <motion.img
+          src={ASSETS.rocket}
+          alt="Rocket"
+          loading="lazy"
+          decoding="async"
+          className="absolute top-10 right-10 w-32 md:w-64 z-10 opacity-90 drop-shadow-[0_0_30px_rgba(253,128,36,0.6)]"
+          animate={{
+            y: [-20, 20, -20],
+            rotate: [0, 5, -5, 0],
+          }}
+          transition={{
+            duration: 6,
+            repeat: Infinity,
+            ease: "easeInOut",
+          }}
+        />
+      )}
       
-      <motion.img
-         src={ASSETS.char1}
-         alt="Character"
-         className="absolute bottom-0 left-10 w-40 md:w-80 z-10 opacity-100"
-         initial={{ y: 200, opacity: 0 }}
-         animate={{ y: 0, opacity: 1 }}
-         transition={{ duration: 1, delay: 0.5 }}
-      />
+      {shouldReduceMotion ? (
+        <img
+          src={ASSETS.char1}
+          alt="Character"
+          loading="lazy"
+          decoding="async"
+          className="absolute bottom-0 left-10 w-40 md:w-80 z-10 opacity-100"
+        />
+      ) : (
+        <motion.img
+          src={ASSETS.char1}
+          alt="Character"
+          loading="lazy"
+          decoding="async"
+          className="absolute bottom-0 left-10 w-40 md:w-80 z-10 opacity-100"
+          initial={{ y: 200, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ duration: 1, delay: 0.5 }}
+        />
+      )}
       
-      <motion.img
-        src={ASSETS.char2}
-        alt="Character"
-        className="absolute bottom-10 right-20 w-24 md:w-48 z-0 opacity-80 blur-[1px]"
-        initial={{ y: 100, opacity: 0 }}
-        animate={{ y: 0, opacity: 0.8 }}
-        transition={{ duration: 1, delay: 0.8 }}
-      />
+      {shouldReduceMotion ? (
+        <img
+          src={ASSETS.char2}
+          alt="Character"
+          loading="lazy"
+          decoding="async"
+          className="absolute bottom-10 right-20 w-24 md:w-48 z-0 opacity-80 blur-[1px]"
+        />
+      ) : (
+        <motion.img
+          src={ASSETS.char2}
+          alt="Character"
+          loading="lazy"
+          decoding="async"
+          className="absolute bottom-10 right-20 w-24 md:w-48 z-0 opacity-80 blur-[1px]"
+          initial={{ y: 100, opacity: 0 }}
+          animate={{ y: 0, opacity: 0.8 }}
+          transition={{ duration: 1, delay: 0.8 }}
+        />
+      )}
 
 
       {/* Main Content */}
@@ -68,8 +105,12 @@ export function WelcomeScreen({ programs, onSelect }: WelcomeScreenProps) {
         
         {/* Header Text */}
         <motion.div
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
+            {...(shouldReduceMotion
+              ? {}
+              : {
+                  initial: { opacity: 0, y: -20 },
+                  animate: { opacity: 1, y: 0 },
+                })}
             className="mb-12"
         >
             <div className="inline-block px-4 py-1 rounded-full bg-brand-yellow/20 border border-brand-yellow/50 text-brand-yellow font-bold text-sm tracking-wider uppercase mb-4 backdrop-blur-sm">
@@ -93,11 +134,15 @@ export function WelcomeScreen({ programs, onSelect }: WelcomeScreenProps) {
                     <motion.button
                         key={program}
                         onClick={() => onSelect(program)}
-                        initial={{ opacity: 0, scale: 0.9 }}
-                        animate={{ opacity: 1, scale: 1 }}
-                        transition={{ delay: 0.2 + (idx * 0.1) }}
-                        whileHover={{ scale: 1.03, y: -5 }}
-                        whileTap={{ scale: 0.98 }}
+                        {...(shouldReduceMotion
+                          ? {}
+                          : {
+                              initial: { opacity: 0, scale: 0.9 },
+                              animate: { opacity: 1, scale: 1 },
+                              transition: { delay: 0.2 + (idx * 0.1) },
+                              whileHover: { scale: 1.03, y: -5 },
+                              whileTap: { scale: 0.98 },
+                            })}
                         className="group relative flex items-center p-6 rounded-3xl bg-white/10 border border-white/20 backdrop-blur-md hover:bg-white/20 hover:border-brand-yellow/50 transition-all text-left overflow-hidden"
                     >
                         {/* Hover Glow */}
