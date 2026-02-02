@@ -214,7 +214,7 @@ export default function Home() {
             <AuthOverlay onLogin={(name) => setTeacherName(name)} />
         )}
         
-      <div className="max-w-[1920px] mx-auto flex flex-col md:flex-row h-screen relative z-10">
+      <div className="w-full flex flex-col md:flex-row h-screen relative z-10">
         
         {/* Sidebar */}
         <aside className="w-full md:w-64 bg-[#0F172A] border-b md:border-b-0 md:border-r border-white/10 p-4 md:p-6 overflow-y-auto z-20 shrink-0 flex flex-col">
