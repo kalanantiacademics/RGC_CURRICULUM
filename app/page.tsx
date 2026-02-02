@@ -59,11 +59,37 @@ export default function Home() {
     loadData();
   }, []);
 
+  // Sort Order & Age Metadata
+  const PROGRAM_METADATA: Record<string, { age: string; order: number }> = {
+    "scratchjr": { age: "5-6 Tahun", order: 1 },
+    "scratch": { age: "7-12 Tahun", order: 2 },
+    "minecraft": { age: "7-9 Tahun", order: 3 },
+    "roblox studio": { age: "10-15 Tahun", order: 4 },
+    "roblox": { age: "10-15 Tahun", order: 4 },
+    "diy robotik": { age: "7-12 Tahun", order: 5 },
+    "diy robotic": { age: "7-12 Tahun", order: 5 }, // English variation
+    "micro:bit robotic": { age: "7-15 Tahun", order: 6 },
+    "microbit robotic": { age: "7-15 Tahun", order: 6 },
+    "app inventor": { age: "13-15 Tahun", order: 7 },
+    "python": { age: "15-18 Tahun", order: 8 },
+  };
+
+  const getCleanName = (pid: string) => pid.replace(/B2C_|B2B_|B2S_/g, "").replace(/_/g, " ");
+
   // Extract unique Programs
   const programs = useMemo(() => {
     // Filter out items without program_id just in case
     const uniquePrograms = Array.from(new Set(data.map(item => item.program_id))).filter(Boolean);
-    return uniquePrograms.sort();
+    
+    return uniquePrograms.sort((a, b) => {
+        const nameA = getCleanName(a).toLowerCase();
+        const nameB = getCleanName(b).toLowerCase();
+        
+        const metaA = Object.entries(PROGRAM_METADATA).find(([key]) => nameA.includes(key))?.[1] || { order: 99 };
+        const metaB = Object.entries(PROGRAM_METADATA).find(([key]) => nameB.includes(key))?.[1] || { order: 99 };
+        
+        return metaA.order - metaB.order;
+    });
   }, [data]);
 
   // Extract Levels for selected Program
@@ -324,7 +350,16 @@ export default function Home() {
                                         </div>
                                         
                                         <div>
-                                            <h3 className="text-xl font-bold text-white mb-1 group-hover:text-brand-yellow transition-colors">{program.replace(/B2C_|B2B_|B2S_/g, "").replace(/_/g, " ")}</h3>
+                                            {(() => {
+                                                const cleanName = getCleanName(program).toLowerCase();
+                                                const meta = Object.entries(PROGRAM_METADATA).find(([key]) => cleanName.includes(key))?.[1];
+                                                return meta ? (
+                                                    <span className="inline-block px-2 py-0.5 rounded-full bg-brand-yellow/20 border border-brand-yellow/30 text-brand-yellow text-[10px] font-bold uppercase tracking-wide mb-2">
+                                                        {meta.age}
+                                                    </span>
+                                                ) : null;
+                                            })()}
+                                            <h3 className="text-xl font-bold text-white mb-1 group-hover:text-brand-yellow transition-colors">{getCleanName(program)}</h3>
                                             <div className="flex items-center gap-2 text-sm text-slate-400 group-hover:text-white transition-colors">
                                                 <span>View Curriculum</span>
                                                 <ChevronRight className="w-4 h-4" />
