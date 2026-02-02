@@ -100,7 +100,7 @@ export function SessionDetailModal({ session, isOpen, onClose }: SessionDetailMo
             exit={{ opacity: 0 }}
             key="backdrop"
             onClick={onClose}
-            className="fixed inset-0 bg-black/80 backdrop-blur-md z-50 flex items-center justify-center p-4 md:p-8"
+            className="fixed inset-0 bg-black/80 backdrop-blur-md z-50 flex items-end md:items-center justify-center p-0 md:p-8"
           >
             {/* Modal Content */}
             <motion.div
@@ -109,11 +109,11 @@ export function SessionDetailModal({ session, isOpen, onClose }: SessionDetailMo
               exit={{ scale: 0.95, opacity: 0, y: 20 }}
               key="modal-content"
               onClick={(e) => e.stopPropagation()}
-              className="bg-[#1B3F6A] border border-white/10 w-full max-w-6xl h-[90vh] rounded-3xl shadow-2xl relative flex flex-col overflow-hidden"
+              className="bg-[#1B3F6A] border border-white/10 w-full max-w-6xl h-[92vh] md:h-[90vh] rounded-t-3xl md:rounded-3xl shadow-2xl relative flex flex-col overflow-hidden"
             >
               
               {/* Header */}
-              <div className="px-8 py-6 border-b border-white/10 bg-[#153255] flex justify-between items-center gap-6 shrink-0 z-20">
+              <div className="px-4 py-4 md:px-8 md:py-6 border-b border-white/10 bg-[#153255] flex justify-between items-start md:items-center gap-4 shrink-0 z-20">
                  {previewUrl ? (
                      <div className="flex items-center gap-4 flex-1">
                          <button onClick={closePreview} className="flex items-center gap-2 px-4 py-2 rounded-xl bg-zinc-800 hover:bg-zinc-700 text-zinc-300 hover:text-white transition-colors">
@@ -135,7 +135,7 @@ export function SessionDetailModal({ session, isOpen, onClose }: SessionDetailMo
                             )}
                         </div>
                         <div className="flex items-baseline gap-4">
-                            <h2 className="text-3xl font-bold text-white leading-tight">{session.topic_title}</h2>
+                            <h2 className="text-xl md:text-3xl font-bold text-white leading-tight">{session.topic_title}</h2>
                             {session.planet_theme && (
                                 <span className="hidden md:flex items-center gap-1 text-sm font-medium text-fuchsia-400 bg-fuchsia-400/10 px-3 py-1 rounded-full border border-fuchsia-400/20">
                                     <Globe className="w-3 h-3" /> {session.planet_theme}
@@ -176,13 +176,13 @@ export function SessionDetailModal({ session, isOpen, onClose }: SessionDetailMo
                   ) : (
                       <div className="flex flex-col h-full">
                           {/* Tabs */}
-                          <div className="flex border-b border-white/10 px-8 bg-[#153255]/50 backdrop-blur-sm z-10 sticky top-0">
+                          <div className="flex border-b border-white/10 px-0 md:px-8 bg-[#153255]/50 backdrop-blur-sm z-10 sticky top-0 overflow-x-auto hide-scrollbar">
                              <TabButton id="info" label="Session Info" icon={<BookOpen className="w-4 h-4"/>} active={activeTab === "info"} onClick={() => setActiveTab("info")} />
                              <TabButton id="tools" label="Teacher Tools" icon={<ShieldCheck className="w-4 h-4"/>} active={activeTab === "tools"} onClick={() => setActiveTab("tools")} />
                              <TabButton id="assets" label="Class Assets" icon={<Layers className="w-4 h-4"/>} active={activeTab === "assets"} onClick={() => setActiveTab("assets")} />
                           </div>
 
-                          <div className="flex-1 overflow-y-auto p-6 md:p-8 scroll-smooth">
+                          <div className="flex-1 overflow-y-auto p-4 md:p-8 scroll-smooth">
                              {/* Tab 1: Info */}
                              {activeTab === "info" && (
                                  <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 animate-in fade-in slide-in-from-bottom-4 duration-300">

@@ -217,7 +217,8 @@ export default function Home() {
       <div className="w-full flex flex-col md:flex-row h-screen relative z-10">
         
         {/* Sidebar */}
-        <aside className="w-full md:w-64 bg-[#0F172A] border-b md:border-b-0 md:border-r border-white/10 p-4 md:p-6 overflow-y-auto z-20 shrink-0 flex flex-col">
+        {/* Sidebar - HIDDEN ON MOBILE */}
+        <aside className="hidden md:flex w-64 bg-[#0F172A] border-r border-white/10 p-6 overflow-y-auto z-20 shrink-0 flex-col">
             {/* Desktop Brand Header */}
             <div className="mb-8 hidden md:block pl-2">
                  <img 
@@ -268,12 +269,24 @@ export default function Home() {
         <main className="flex-1 flex flex-col h-full bg-[#020617]/90 md:rounded-l-3xl border-l border-white/10 shadow-2xl overflow-hidden relative">
             
             {/* Dashboard Header */}
-            <header className="px-8 py-6 border-b border-white/10 bg-[#020617]/95 z-20 flex flex-col md:flex-row md:items-start justify-between gap-4">
+            <header className="px-4 py-4 md:px-8 md:py-6 border-b border-white/10 bg-[#020617]/95 z-20 flex flex-col md:flex-row md:items-start justify-between gap-4">
                 <div className="flex-1">
+                    {/* Mobile Back Button */}
+                    {selectedProgram && (
+                        <button 
+                            onClick={() => setSelectedProgram(null)}
+                            className="md:hidden flex items-center gap-2 text-zinc-400 hover:text-white mb-4 text-xs font-bold uppercase tracking-wider"
+                        >
+                            <ChevronRight className="w-4 h-4 rotate-180" /> Back to Home
+                        </button>
+                    )}
+
                     {selectedProgram ? (
                         <>
-                            <Breadcrumbs program={selectedProgram} level={selectedLevel} />
-                            <h1 className="text-3xl font-bold text-white mt-2 drop-shadow-lg">
+                            <div className="hidden md:block">
+                                <Breadcrumbs program={selectedProgram} level={selectedLevel} />
+                            </div>
+                            <h1 className="text-2xl md:text-3xl font-bold text-white mt-2 drop-shadow-lg">
                                 {selectedProgram?.replace(/B2C_|B2B_|B2S_/g, "").replace(/_/g, " ")}
                             </h1>
                         </>
@@ -307,7 +320,7 @@ export default function Home() {
             
             {/* Conditional Sub-Header (Tabs) */}
             {selectedProgram && (
-                 <div className="px-8 pb-4 bg-[#020617]/95 z-20 border-b border-white/10">
+                 <div className="px-4 md:px-8 pb-4 bg-[#020617]/95 z-20 border-b border-white/10 overflow-x-auto">
                     <LevelTabs 
                         levels={levels} 
                         selectedLevel={selectedLevel} 
@@ -437,7 +450,7 @@ export default function Home() {
 
                 {/* 2. DASHBOARD GRID (Program Selected) */}
                 {selectedProgram && groupedContent.length > 0 && (
-                     <div className="p-8 pb-32">
+                     <div className="p-4 md:p-8 pb-32">
                         <AnimatePresence mode='wait'>
                             <motion.div 
                                 key={selectedLevel}
