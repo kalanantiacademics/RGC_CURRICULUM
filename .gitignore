@@ -27,3 +27,7 @@ ts-debug.log*
 
 # vercel
 .vercel
+
+# local project files
+Code.gs
+b2c.html
