@@ -6,7 +6,7 @@ import { ProgramSidebar } from "@/components/ProgramSidebar";
 import { LevelTabs } from "@/components/LevelTabs";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
 import { fetchCurriculum, CurriculumItem } from "@/lib/api";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
 import { SessionDetailModal } from "@/components/SessionDetailModal";
 import { AuthOverlay } from "@/components/AuthOverlay";
 import { Search, ChevronRight } from "lucide-react";
@@ -15,6 +15,7 @@ export default function Home() {
   const [data, setData] = useState<CurriculumItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const shouldReduceMotion = useReducedMotion();
 
   const [selectedProgram, setSelectedProgram] = useState<string | null>(null);
   const [selectedLevel, setSelectedLevel] = useState<string>("Trial Class");
@@ -165,6 +166,39 @@ export default function Home() {
       setIsModalOpen(true);
   };
 
+  const welcomeMotionProps = shouldReduceMotion
+    ? {}
+    : {
+        initial: { opacity: 0, y: 20 },
+        animate: { opacity: 1, y: 0 },
+      };
+
+  const programCardMotionProps = (delay: number) =>
+    shouldReduceMotion
+      ? {}
+      : {
+          initial: { opacity: 0, y: 20 },
+          animate: { opacity: 1, y: 0 },
+          transition: { delay },
+          whileHover: { scale: 1.02, y: -5 },
+        };
+
+  const levelTransitionProps = shouldReduceMotion
+    ? {}
+    : {
+        initial: { opacity: 0, x: 20 },
+        animate: { opacity: 1, x: 0 },
+        exit: { opacity: 0, x: -20 },
+        transition: { duration: 0.2 },
+      };
+
+  const sessionCardMotionProps = shouldReduceMotion
+    ? {}
+    : {
+        whileHover: { scale: 1.02 },
+        transition: { type: "spring", stiffness: 300, damping: 20 },
+      };
+
   return (
     <div className="min-h-screen bg-[#020617] text-white font-sans selection:bg-brand-yellow/30 overflow-hidden relative">
         
@@ -189,6 +223,8 @@ export default function Home() {
                  <img 
                     src="https://uob-1328237036.cos.ap-singapore.myqcloud.com//file-uploader/images/94907efd-30d9-49af-8e62-aa4aee51ad33.png" 
                     alt="RG Coding" 
+                    loading="lazy"
+                    decoding="async"
                     className="h-16 object-contain mb-4 drop-shadow-md brightness-110" // Increased brightness
                 />
             </div>
@@ -212,6 +248,8 @@ export default function Home() {
                  <img 
                     src="https://cdn-web-2.ruangguru.com/landing-pages/assets/41512315-979e-43c3-b6b8-5ba139b687f8.png" 
                     alt="Decor"
+                    loading="lazy"
+                    decoding="async"
                     className="w-48 opacity-80 drop-shadow-lg"
                  />
             </div>
@@ -260,6 +298,8 @@ export default function Home() {
                         <img 
                             src="https://cdn-web-2.ruangguru.com/landing-pages/assets/545c0426-169c-406f-8775-93afcacef50a.png" 
                             alt="Kalananti" 
+                            loading="lazy"
+                            decoding="async"
                             className="h-12 md:h-14 object-contain drop-shadow-md"
                         />
                 </div>
@@ -288,37 +328,60 @@ export default function Home() {
                         </div>
 
                          {/* Floating Rocket - "Jalan jalan" animation */}
-                         <motion.img
-                            src={ASSETS.rocket}
-                            alt="Rocket"
-                            className="absolute top-20 right-20 w-48 md:w-80 z-0 opacity-80 drop-shadow-[0_0_30px_rgba(253,128,36,0.5)] will-change-transform"
-                            animate={{
-                                y: [-30, 30, -30],
-                                x: [-20, 20, -20],
-                                rotate: [0, 10, -5, 0],
-                            }}
-                            transition={{
-                                duration: 8,
-                                repeat: Infinity,
-                                ease: "easeInOut",
-                            }}
-                        />
+                         {shouldReduceMotion ? (
+                            <img
+                                src={ASSETS.rocket}
+                                alt="Rocket"
+                                loading="lazy"
+                                decoding="async"
+                                className="absolute top-20 right-20 w-48 md:w-80 z-0 opacity-80 drop-shadow-[0_0_30px_rgba(253,128,36,0.5)]"
+                            />
+                         ) : (
+                            <motion.img
+                                src={ASSETS.rocket}
+                                alt="Rocket"
+                                loading="lazy"
+                                decoding="async"
+                                className="absolute top-20 right-20 w-48 md:w-80 z-0 opacity-80 drop-shadow-[0_0_30px_rgba(253,128,36,0.5)] will-change-transform"
+                                animate={{
+                                    y: [-30, 30, -30],
+                                    x: [-20, 20, -20],
+                                    rotate: [0, 10, -5, 0],
+                                }}
+                                transition={{
+                                    duration: 8,
+                                    repeat: Infinity,
+                                    ease: "easeInOut",
+                                }}
+                            />
+                         )}
 
                         {/* Character Decor */}
-                         <motion.img
-                            src={ASSETS.char1}
-                            alt="Character"
-                            className="absolute bottom-10 left-10 w-128 md:w-128 z-0 opacity-100"
-                            initial={{ y: 100, opacity: 0 }}
-                            animate={{ y: 0, opacity: 1 }}
-                            transition={{ duration: 1 }}
-                        />
+                         {shouldReduceMotion ? (
+                            <img
+                                src={ASSETS.char1}
+                                alt="Character"
+                                loading="lazy"
+                                decoding="async"
+                                className="absolute bottom-10 left-10 w-128 md:w-128 z-0 opacity-100"
+                            />
+                         ) : (
+                            <motion.img
+                                src={ASSETS.char1}
+                                alt="Character"
+                                loading="lazy"
+                                decoding="async"
+                                className="absolute bottom-10 left-10 w-128 md:w-128 z-0 opacity-100"
+                                initial={{ y: 100, opacity: 0 }}
+                                animate={{ y: 0, opacity: 1 }}
+                                transition={{ duration: 1 }}
+                            />
+                         )}
 
                         <div className="relative z-10 w-full max-w-5xl">
                              {/* Welcome Text */}
                              <motion.div 
-                                initial={{ opacity: 0, y: 20 }}
-                                animate={{ opacity: 1, y: 0 }}
+                                {...welcomeMotionProps}
                                 className="mb-12"
                              >
                                 <div className="inline-block px-4 py-1 rounded-full bg-brand-yellow/20 border border-brand-yellow/50 text-brand-yellow font-bold text-sm tracking-wider uppercase mb-4 backdrop-blur-sm">
@@ -338,10 +401,7 @@ export default function Home() {
                                     <motion.button
                                         key={program}
                                         onClick={() => handleProgramSelect(program)}
-                                        initial={{ opacity: 0, y: 20 }}
-                                        animate={{ opacity: 1, y: 0 }}
-                                        transition={{ delay: 0.1 + (idx * 0.1) }}
-                                        whileHover={{ scale: 1.02, y: -5 }}
+                                        {...programCardMotionProps(0.1 + (idx * 0.1))}
                                         className="group relative flex flex-col p-6 rounded-3xl bg-white/10 border border-white/10 backdrop-blur-md hover:bg-white/20 hover:border-brand-yellow/50 transition-all text-left overflow-hidden h-48 justify-between"
                                     >
                                         <div className="absolute top-0 right-0 p-3 opacity-10 group-hover:opacity-20 transition-opacity">
@@ -381,10 +441,7 @@ export default function Home() {
                         <AnimatePresence mode='wait'>
                             <motion.div 
                                 key={selectedLevel}
-                                initial={{ opacity: 0, x: 20 }}
-                                animate={{ opacity: 1, x: 0 }}
-                                exit={{ opacity: 0, x: -20 }}
-                                transition={{ duration: 0.2 }}
+                                {...levelTransitionProps}
                                 className="max-w-7xl mx-auto"
                             >
                                 {groupedContent.map((group, groupIndex) => (
@@ -401,8 +458,7 @@ export default function Home() {
                                             {group.items.map((item) => (
                                                 <motion.div
                                                     key={item.unique_code || (item.program_id + item.level_id + item.session_order)}
-                                                    whileHover={{ scale: 1.02 }}
-                                                    transition={{ type: "spring", stiffness: 300, damping: 20 }}
+                                                    {...sessionCardMotionProps}
                                                     onClick={() => handleCardClick(item)}
                                                 >
                                                     <CurriculumCard 
