@@ -38,7 +38,7 @@ export interface CurriculumItem {
 
 export async function fetchCurriculum(): Promise<CurriculumItem[]> {
   try {
-    const response = await fetch(API_URL);
+    const response = await fetch(API_URL, { cache: "no-store" });
     if (!response.ok) {
         if (API_URL.includes("YOUR_APPS_SCRIPT_URL")) {
              console.warn("Using mock data because API_URL is not set.");
