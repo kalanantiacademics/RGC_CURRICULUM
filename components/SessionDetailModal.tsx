@@ -135,14 +135,14 @@ export function SessionDetailModal({ session, isOpen, onClose }: SessionDetailMo
                             )}
                         </div>
                         <div className="flex items-baseline gap-4">
-                            <h2 className="text-xl md:text-3xl font-bold text-white leading-tight">{session.topic_title}</h2>
+                            <h2 className="text-xl md:text-3xl font-bold text-white leading-tight">{session.sub_topic_title}</h2>
                             {session.planet_theme && (
                                 <span className="hidden md:flex items-center gap-1 text-sm font-medium text-fuchsia-400 bg-fuchsia-400/10 px-3 py-1 rounded-full border border-fuchsia-400/20">
                                     <Globe className="w-3 h-3" /> {session.planet_theme}
                                 </span>
                             )}
                         </div>
-                        {session.unit_name && <p className="text-blue-200/60 text-sm font-medium">{session.unit_name}</p>}
+                        {session.topic_title && <p className="text-blue-200/60 text-sm font-medium">{session.topic_title}</p>}
                      </div>
                  )}
                  <button
@@ -215,12 +215,12 @@ export function SessionDetailModal({ session, isOpen, onClose }: SessionDetailMo
                                                          <div className="text-xs text-zinc-500 mb-1">Theme</div>
                                                          <div className="text-white font-medium">{session.planet_theme}</div>
                                                      </div>
-                                                     {session.unit_name && (
-                                                         <div>
-                                                             <div className="text-xs text-zinc-500 mb-1">Unit</div>
-                                                             <div className="text-white font-medium">{session.unit_name}</div>
-                                                         </div>
-                                                     )}
+                                                     {session.topic_title && (
+                                                        <div>
+                                                            <div className="text-xs text-zinc-500 mb-1">Topic</div>
+                                                            <div className="text-white font-medium">{session.topic_title}</div>
+                                                        </div>
+                                                    )}
                                                  </div>
                                              </div>
                                          )}
@@ -272,7 +272,20 @@ export function SessionDetailModal({ session, isOpen, onClose }: SessionDetailMo
                                          <MultiLinkGroup label="Syllabus / Journey Map" links={getLinks(session.link_syllabus)} icon={<Globe className="w-4 h-4"/>} onClick={handleLinkClick} variant="ghost" />
                                          <MultiLinkGroup label="Explainer Videos" links={getLinks(session.explainer_video)} icon={<MonitorPlay className="w-4 h-4"/>} onClick={handleLinkClick} />
                                          <MultiLinkGroup label="Sample Projects" links={getLinks(session.link_sample)} icon={<ExternalLink className="w-4 h-4"/>} onClick={handleLinkClick} />
-                                         <MultiLinkGroup label="Rubric Form" links={getLinks(session.link_rubric_form)} icon={<FileText className="w-4 h-4"/>} onClick={handleLinkClick} />
+                                         
+                                         {/* Rubric: Only for Session 12 or TRIAL */}
+                                         {(() => {
+                                             const isSession12 = session.session_order == 12;
+                                             const isTrial = String(session.session_order).toUpperCase() === 'TRIAL' || String(session.level_id).toUpperCase() === 'TRIAL CLASS';
+                                             
+                                             if (isSession12) {
+                                                 return <MultiLinkGroup label="Student Report Form" links={getLinks(session.link_rubric_form)} icon={<FileText className="w-4 h-4"/>} onClick={handleLinkClick} />;
+                                             }
+                                             if (isTrial) {
+                                                 return <MultiLinkGroup label="Form Observation Rubric" links={getLinks(session.link_rubric_form)} icon={<FileText className="w-4 h-4"/>} onClick={handleLinkClick} />;
+                                             }
+                                             return null;
+                                         })()}
                                      </div>
                                  </div>
                              )}

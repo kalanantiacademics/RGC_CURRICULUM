@@ -138,11 +138,11 @@ export default function Home() {
       .filter(item => item.program_id === selectedProgram && item.level_id === selectedLevel)
       .sort((a, b) => Number(a.session_order) - Number(b.session_order));
 
-    // Then group by unit_name
+    // Then group by topic_title (was unit_name)
     const groups: { unit: string; items: CurriculumItem[] }[] = [];
     
     sortedItems.forEach(item => {
-        const unitName = item.unit_name || "General";
+        const unitName = item.topic_title || "General"; // Used as Group Name
         const lastGroup = groups[groups.length - 1];
         
         if (lastGroup && lastGroup.unit === unitName) {
@@ -475,7 +475,7 @@ export default function Home() {
                                                     onClick={() => handleCardClick(item)}
                                                 >
                                                     <CurriculumCard 
-                                                        title={item.topic_title}
+                                                        title={item.sub_topic_title}
                                                         description={item.learning_objective}
                                                         order={item.session_order}
                                                         planetTheme={item.planet_theme}

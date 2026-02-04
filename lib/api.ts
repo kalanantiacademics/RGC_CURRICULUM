@@ -10,8 +10,9 @@ export interface CurriculumItem {
   unique_code: string; // e.g. PY1-001
   
   // Content
-  topic_title: string; // e.g. Introduction
-  unit_name: string; // e.g. Unit 1
+  topic_title: string; // Grouping (previously Unit) e.g. "Introduction"
+  sub_topic_title: string; // Session Title (previously Topic) e.g. "Hello World"
+  // unit_name removed
   learning_objective: string;
   activity_breakdown: string;
   mastery_focus: string;
@@ -87,8 +88,12 @@ export async function fetchCurriculum(): Promise<CurriculumItem[]> {
            session_order: parseInt(item.session_order) || item.session_order || 0,
            
            // Content
-           topic_title: item.topic_title ? String(item.topic_title) : "Untitled Session",
-           unit_name: item.unit_name ? String(item.unit_name) : "",
+           // OLD SCHEMA: unit_name (Group), topic_title (Title)
+           // NEW SCHEMA: topic_title (Group), sub-topic_title (Title)
+           
+           topic_title: item.topic_title ? String(item.topic_title) : "General", // Now acts as the Group (Unit)
+           sub_topic_title: item['sub-topic_title'] ? String(item['sub-topic_title']) : (item.topic_title ? String(item.topic_title) : "Untitled Session"), // Title
+           
            planet_theme: item.planet_theme ? String(item.planet_theme) : "",
            learning_objective: item.learning_objective ? String(item.learning_objective) : "",
            activity_breakdown: item.activity_breakdown ? String(item.activity_breakdown) : "",
@@ -133,8 +138,8 @@ const mockData: CurriculumItem[] = [
         level_id: "Level 1",
         session_order: 1,
         unique_code: "PY1-001",
-        topic_title: "Introduction",
-        unit_name: "Getting Started",
+        topic_title: "Getting Started", // Group (previously Unit)
+        sub_topic_title: "Introduction", // Title (previously Topic)
         learning_objective: "Learn basic syntax",
         planet_theme: "Cyber City",
         activity_breakdown: "1. Login\n2. Hello World\n3. Variables",
@@ -147,8 +152,8 @@ const mockData: CurriculumItem[] = [
         level_id: "Level 1",
         session_order: 2,
         unique_code: "PY1-002",
-        topic_title: "Loops",
-        unit_name: "Flow Control",
+        topic_title: "Flow Control", // Group
+        sub_topic_title: "Loops", // Title
         learning_objective: "Master for and while loops",
         planet_theme: "Cyber City",
         activity_breakdown: "1. For Loop\n2. While Loop\n3. Practice",
