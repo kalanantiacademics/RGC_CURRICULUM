@@ -61,21 +61,19 @@ export default function Home() {
   }, []);
 
   // Sort Order & Age Metadata
-  const PROGRAM_METADATA: Record<string, { age: string; order: number }> = {
-    "scratchjr": { age: "5-6 Tahun", order: 1 },
-    "scratch": { age: "7-12 Tahun", order: 2 },
-    "minecraft": { age: "7-9 Tahun", order: 3 },
-    "roblox studio": { age: "10-15 Tahun", order: 4 },
-    "roblox": { age: "10-15 Tahun", order: 4 },
-    "diy robotik": { age: "7-12 Tahun", order: 5 },
-    "diy robotic": { age: "7-12 Tahun", order: 5 },
-    "micro:bit robotic": { age: "7-15 Tahun", order: 6 },
-    "microbit robotic": { age: "7-15 Tahun", order: 6 },
-    "microbit": { age: "7-15 Tahun", order: 6 },
-    "micro:bit": { age: "7-15 Tahun", order: 6 },
-    "yahboom": { age: "7-15 Tahun", order: 6 },
-    "app inventor": { age: "13-15 Tahun", order: 7 },
-    "python": { age: "15-18 Tahun", order: 8 },
+  const PROGRAM_METADATA: Record<string, { age: string; order: number; category?: string }> = {
+    "scratchjr": { age: "5-6 Tahun", order: 1, category: "C<>deplay" },
+    "scratch": { age: "7-12 Tahun", order: 2, category: "C<>deplay" },
+    "minecraft": { age: "7-9 Tahun", order: 3, category: "Game-Dev" },
+    "roblox studio": { age: "10-15 Tahun", order: 4, category: "Game-Dev" },
+    "roblox": { age: "10-15 Tahun", order: 4, category: "Game-Dev" },
+    "microbit yahboom": { age: "7-15 Tahun", order: 5, category: "Robo: bit" },
+    "micro:bit robotic": { age: "7-15 Tahun", order: 6, category: "App Lab" },
+    "microbit robotic": { age: "7-15 Tahun", order: 6, category: "App Lab" },
+    "microbit": { age: "7-15 Tahun", order: 6, category: "App Lab" },
+    "micro:bit": { age: "7-15 Tahun", order: 6, category: "App Lab" },
+    "app inventor": { age: "13-15 Tahun", order: 7, category: "App Lab" },
+    "python": { age: "13-18 Tahun", order: 8, category: "App Lab" },
   };
 
   const getCleanName = (pid: string) => pid.replace(/B2C_|B2B_|B2S_/g, "").replace(/_/g, " ");
@@ -240,6 +238,7 @@ export default function Home() {
                         programs={programs} 
                         selectedProgram={selectedProgram}
                         onSelect={handleProgramSelect}
+                        metadata={PROGRAM_METADATA}
                     />
                 )}
             </div>

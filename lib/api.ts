@@ -115,7 +115,7 @@ export async function fetchCurriculum(): Promise<CurriculumItem[]> {
            
            "content_&_pedagogy": item["content_&_pedagogy"]
        };
-    });
+    }).filter(item => item.program_id !== "Uncategorized" && item.program_id !== "0" && item.program_id !== "undefined");
 
     return normalizedItems;
   } catch (error) {
