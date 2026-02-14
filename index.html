@@ -10,29 +10,8 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     
-    <!-- Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    fontFamily: {
-                        sans: ['Outfit', 'sans-serif'],
-                    },
-                    colors: {
-                        brand: {
-                            blue: "#265E9B",
-                            yellow: "#F9C013",
-                            green: "#339D9D",
-                            orange: "#FD8024",
-                        },
-                        background: "hsl(240 10% 3.9%)",
-                        foreground: "hsl(0 0% 98%)",
-                    }
-                }
-            }
-        }
-    </script>
+    <!-- Tailwind CSS (production build) -->
+    <link rel="stylesheet" href="./styles/portal.css">
 
     <!-- Custom Styles -->
     <style>
@@ -402,10 +381,10 @@
                      <!-- Preview Iframe Layer -->
                     <div id="modal-preview-content" class="hidden absolute inset-0 z-30 flex flex-col bg-[#0F172A]">
                         <div class="flex-1 relative w-full h-full">
-                            <iframe id="preview-iframe" class="w-full h-full border-0" allow="autoplay; fullscreen"></iframe>
+                            <iframe id="preview-iframe" class="w-full h-full border-0" title="Session preview" allow="fullscreen; encrypted-media; picture-in-picture" loading="lazy" referrerpolicy="strict-origin-when-cross-origin"></iframe>
                         </div>
                         <div class="p-4 bg-black/40 text-center border-t border-white/5 backdrop-blur-xl absolute bottom-0 inset-x-0">
-                             <a id="preview-external-link" href="#" target="_blank" class="inline-flex items-center gap-2 px-6 py-2 rounded-full bg-brand-blue hover:bg-brand-blue/80 text-white text-xs font-bold uppercase tracking-wider transition-all shadow-lg shadow-brand-blue/20">
+                             <a id="preview-external-link" href="#" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 px-6 py-2 rounded-full bg-brand-blue hover:bg-brand-blue/80 text-white text-xs font-bold uppercase tracking-wider transition-all shadow-lg shadow-brand-blue/20">
                                 <span>Open in New Tab</span>
                                 <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1 -2 2H5a2 2 0 0 1 -2 -2V8a2 2 0 0 1 2 -2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
                              </a>
@@ -1176,31 +1155,72 @@
         }
 
         // --- Preview Logic ---
+        function getYoutubeVideoId(rawUrl) {
+            try {
+                const parsed = new URL(rawUrl);
+                const host = parsed.hostname.replace(/^www\./, '');
+                if (host === 'youtu.be') {
+                    const id = parsed.pathname.split('/').filter(Boolean)[0];
+                    return id || null;
+                }
+                if (host === 'youtube.com' || host === 'm.youtube.com') {
+                    if (parsed.pathname === '/watch') return parsed.searchParams.get('v');
+                    const pathMatch = parsed.pathname.match(/^\/embed\/([^/?#]+)/);
+                    if (pathMatch && pathMatch[1]) return pathMatch[1];
+                }
+            } catch (_) {
+                return null;
+            }
+            return null;
+        }
+
+        function toGooglePreviewUrl(rawUrl) {
+            try {
+                const parsed = new URL(rawUrl);
+                const host = parsed.hostname.replace(/^www\./, '');
+                const path = parsed.pathname;
+
+                if (host === 'docs.google.com') {
+                    const isEmbeddableDoc = /^\/(document|presentation|spreadsheets)\/d\/[^/]+/.test(path);
+                    if (!isEmbeddableDoc) return null;
+                    return rawUrl.replace(/\/(edit|view)([/?].*)?$/, "/preview");
+                }
+
+                if (host === 'drive.google.com') {
+                    const isEmbeddableFile = /^\/file\/d\/[^/]+/.test(path);
+                    if (!isEmbeddableFile) return null;
+                    return rawUrl.replace(/\/(edit|view)([/?].*)?$/, "/preview");
+                }
+            } catch (_) {
+                return null;
+            }
+            return null;
+        }
+
         function handleLinkClick(url) {
             if (!url) return;
             const cleanUrl = url.trim();
 
             // 1. YouTube
-            const ytMatch = cleanUrl.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/)([^&]+)/);
-            if (ytMatch && ytMatch[1]) {
-                openPreview(`https://www.youtube.com/embed/${ytMatch[1]}?autoplay=1`, cleanUrl);
+            const youtubeId = getYoutubeVideoId(cleanUrl);
+            if (youtubeId) {
+                openPreview(`https://www.youtube-nocookie.com/embed/${youtubeId}?rel=0&modestbranding=1`, cleanUrl);
                 return;
             }
 
-            // 2. Google Drive / Slides / Docs
-            if (cleanUrl.includes("docs.google.com") || cleanUrl.includes("drive.google.com")) {
-                const previewUrl = cleanUrl.replace(/\/view.*$/, "/preview").replace(/\/edit.*$/, "/preview");
-                // Ensure external link is NOT preview mode, revert to /view if it was /preview or /edit
+            // 2. Google Drive / Slides / Docs (only embeddable routes)
+            const previewUrl = toGooglePreviewUrl(cleanUrl);
+            if (previewUrl) {
                 let externalUrl = cleanUrl;
                 if (externalUrl.includes("/preview")) {
-                     externalUrl = externalUrl.replace("/preview", "/view");
+                    externalUrl = externalUrl.replace("/preview", "/view");
                 }
                 openPreview(previewUrl, externalUrl);
                 return;
             }
 
             // Fallback: Open in new tab
-            window.open(cleanUrl, '_blank');
+            window.open(cleanUrl, '_blank', 'noopener,noreferrer');
         }
 
         function openPreview(embedUrl, originalUrl) {

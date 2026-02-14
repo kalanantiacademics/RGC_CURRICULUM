@@ -5,6 +5,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
+    "build:portal-css": "tailwindcss -c tailwind.portal.config.js -i ./styles/portal.input.css -o ./styles/portal.css --minify",
     "start": "next start",
     "lint": "next lint"
   },
