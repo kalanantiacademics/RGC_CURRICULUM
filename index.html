@@ -10,8 +10,29 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     
-    <!-- Tailwind CSS (production build) -->
-    <link rel="stylesheet" href="./styles/portal.css">
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Outfit', 'sans-serif'],
+                    },
+                    colors: {
+                        brand: {
+                            blue: "#265E9B",
+                            yellow: "#F9C013",
+                            green: "#339D9D",
+                            orange: "#FD8024",
+                        },
+                        background: "hsl(240 10% 3.9%)",
+                        foreground: "hsl(0 0% 98%)",
+                    }
+                }
+            }
+        }
+    </script>
 
     <!-- Custom Styles -->
     <style>
