@@ -4,3 +4,4 @@
 # Keep only the static deployment entrypoint and gitignore itself
 !.gitignore
 !index.html
+node_modules
