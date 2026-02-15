@@ -8,7 +8,7 @@
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Sora:wght@600;700;800&display=swap" rel="stylesheet">
     
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -36,11 +36,295 @@
 
     <!-- Custom Styles -->
     <style>
+        :root {
+            --bg-canvas: #02030c;
+            --bg-canvas-soft: #07142f;
+            --surface-1: rgba(8, 18, 40, 0.82);
+            --surface-2: rgba(15, 32, 63, 0.66);
+            --surface-3: rgba(8, 18, 40, 0.58);
+            --border-soft: rgba(125, 211, 252, 0.2);
+            --border-strong: rgba(125, 211, 252, 0.4);
+            --text-primary: #f8fbff;
+            --text-secondary: #d7e2f0;
+            --text-muted: #8fa5c2;
+            --accent-teal: #2dd4bf;
+            --accent-sky: #38bdf8;
+            --accent-sun: #f9c013;
+            --shadow-card: 0 18px 46px rgba(1, 7, 23, 0.46);
+            --shadow-card-hover: 0 26px 64px rgba(1, 7, 23, 0.6);
+            --radius-card: 1.5rem;
+            --radius-control: 0.95rem;
+            --focus-ring: rgba(249, 192, 19, 0.35);
+        }
+
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
         body {
-            background-color: #020617;
-            color: white;
+            background-color: var(--bg-canvas);
+            background-image:
+                radial-gradient(circle at 5% -8%, rgba(45, 212, 191, 0.22), transparent 34%),
+                radial-gradient(circle at 96% 2%, rgba(56, 189, 248, 0.26), transparent 32%),
+                radial-gradient(circle at 70% 102%, rgba(249, 192, 19, 0.18), transparent 34%),
+                linear-gradient(164deg, #01030d 0%, var(--bg-canvas-soft) 58%, #081c43 100%);
+            color: var(--text-primary);
             font-family: 'Outfit', sans-serif;
+            line-height: 1.45;
+            letter-spacing: 0.01em;
+            -webkit-font-smoothing: antialiased;
+            text-rendering: optimizeLegibility;
+            position: relative;
+            isolation: isolate;
             overflow-x: hidden;
+        }
+
+        body::before {
+            content: "";
+            position: fixed;
+            inset: 0;
+            background:
+                radial-gradient(circle at 18% 24%, rgba(45, 212, 191, 0.12), transparent 28%),
+                radial-gradient(circle at 86% 76%, rgba(56, 189, 248, 0.15), transparent 30%),
+                repeating-linear-gradient(90deg, rgba(148, 163, 184, 0.05) 0 1px, transparent 1px 92px),
+                repeating-linear-gradient(0deg, rgba(148, 163, 184, 0.04) 0 1px, transparent 1px 92px);
+            opacity: 0.42;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        body::after {
+            content: "";
+            position: fixed;
+            inset: 0;
+            background: linear-gradient(180deg, rgba(2, 6, 23, 0) 0%, rgba(2, 6, 23, 0.24) 100%);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        h1,
+        h2,
+        h3,
+        h4 {
+            font-family: 'Sora', 'Outfit', sans-serif;
+            letter-spacing: -0.01em;
+        }
+
+        p {
+            color: var(--text-secondary);
+        }
+
+        input::placeholder {
+            color: var(--text-muted);
+        }
+
+        :where(button, a, input, textarea, select, [tabindex]):focus-visible {
+            outline: 2px solid rgba(249, 192, 19, 0.92);
+            outline-offset: 2px;
+            box-shadow: 0 0 0 5px var(--focus-ring);
+        }
+
+        :where(button, a, input, textarea, select, [tabindex]):focus:not(:focus-visible) {
+            outline: none;
+            box-shadow: none;
+        }
+
+        button,
+        a[role="button"] {
+            min-height: 2.5rem;
+        }
+
+        button svg,
+        a svg {
+            pointer-events: none;
+        }
+
+        .text-\[9px\],
+        .text-\[10px\] {
+            font-size: 0.72rem !important;
+            line-height: 1rem !important;
+        }
+
+        .ui-card {
+            background:
+                linear-gradient(125deg, rgba(45, 212, 191, 0.08), rgba(15, 32, 63, 0) 26%),
+                linear-gradient(160deg, var(--surface-2), var(--surface-1));
+            border: 1px solid var(--border-soft);
+            border-radius: var(--radius-card);
+            box-shadow: var(--shadow-card);
+            -webkit-backdrop-filter: blur(14px);
+            backdrop-filter: blur(14px);
+        }
+
+        .ui-card-soft {
+            background:
+                linear-gradient(180deg, rgba(56, 189, 248, 0.08), rgba(56, 189, 248, 0) 30%),
+                var(--surface-3);
+            border: 1px solid rgba(148, 163, 184, 0.12);
+            border-radius: var(--radius-card);
+            box-shadow: 0 10px 30px rgba(2, 6, 23, 0.3);
+            -webkit-backdrop-filter: blur(10px);
+            backdrop-filter: blur(10px);
+        }
+
+        .ui-card-hover {
+            transition: transform 0.28s ease, border-color 0.28s ease, box-shadow 0.28s ease, background-color 0.28s ease;
+        }
+
+        .ui-card-hover:hover {
+            transform: translateY(-4px);
+            border-color: var(--border-strong);
+            box-shadow: var(--shadow-card-hover);
+        }
+
+        .ui-control {
+            border-radius: var(--radius-control);
+            border: 1px solid rgba(125, 211, 252, 0.28);
+            background:
+                linear-gradient(180deg, rgba(56, 189, 248, 0.1), rgba(56, 189, 248, 0) 42%),
+                rgba(8, 18, 40, 0.76);
+            transition: all 0.24s ease;
+        }
+
+        .ui-control:hover {
+            border-color: rgba(148, 163, 184, 0.45);
+            background: rgba(30, 41, 59, 0.68);
+        }
+
+        .ui-state {
+            border-radius: 1.25rem;
+            border: 1px solid var(--border-soft);
+            background:
+                linear-gradient(180deg, rgba(56, 189, 248, 0.08), rgba(56, 189, 248, 0) 42%),
+                rgba(8, 18, 40, 0.68);
+            box-shadow: 0 12px 30px rgba(2, 6, 23, 0.28);
+            padding: 1.5rem;
+        }
+
+        .ui-state p {
+            margin: 0;
+        }
+
+        #auth-overlay::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            background:
+                linear-gradient(140deg, rgba(56, 189, 248, 0.28), rgba(56, 189, 248, 0) 32%),
+                linear-gradient(340deg, rgba(249, 192, 19, 0.18), rgba(249, 192, 19, 0) 36%);
+        }
+
+        #auth-overlay {
+            padding: 1rem;
+            overflow-y: auto;
+        }
+
+        #auth-overlay .ui-card {
+            max-height: calc(100vh - 2rem);
+            overflow-y: auto;
+        }
+
+        aside {
+            background:
+                linear-gradient(180deg, rgba(2, 6, 23, 0.98) 0%, rgba(10, 25, 52, 0.94) 100%) !important;
+            border-right-color: rgba(56, 189, 248, 0.22) !important;
+        }
+
+        aside::after {
+            content: "";
+            position: absolute;
+            right: 0;
+            top: 0;
+            bottom: 0;
+            width: 1px;
+            pointer-events: none;
+            background: linear-gradient(180deg, rgba(45, 212, 191, 0), rgba(45, 212, 191, 0.65), rgba(56, 189, 248, 0));
+        }
+
+        main {
+            background:
+                linear-gradient(180deg, rgba(8, 20, 45, 0.88), rgba(7, 20, 47, 0.8)) !important;
+        }
+
+        header {
+            border-bottom-color: rgba(125, 211, 252, 0.2) !important;
+            box-shadow: 0 8px 24px rgba(2, 6, 23, 0.25);
+        }
+
+        #header-title {
+            letter-spacing: -0.03em;
+            background: linear-gradient(90deg, #f8fbff, #8be9ff);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        #home-view::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            background:
+                linear-gradient(145deg, rgba(45, 212, 191, 0.1), rgba(45, 212, 191, 0) 34%),
+                linear-gradient(330deg, rgba(249, 192, 19, 0.1), rgba(249, 192, 19, 0) 30%);
+        }
+
+        #program-grid > button::after,
+        #session-grid .grid > .group::after {
+            content: "";
+            position: absolute;
+            inset: 1px;
+            border-radius: inherit;
+            pointer-events: none;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        #session-grid .grid > .group::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 1rem;
+            right: 1rem;
+            height: 2px;
+            border-radius: 999px;
+            background: linear-gradient(90deg, rgba(45, 212, 191, 0), rgba(45, 212, 191, 0.95), rgba(56, 189, 248, 0.95), rgba(56, 189, 248, 0));
+            opacity: 0.78;
+        }
+
+        #calendar-widget h3,
+        #todays-classes-widget h3 {
+            letter-spacing: 0.02em;
+        }
+
+        #calendar-days > div {
+            min-height: 3.9rem;
+            border-radius: 1rem !important;
+            backdrop-filter: blur(8px);
+        }
+
+        #today-day-label,
+        #modal-level {
+            box-shadow: 0 0 0 1px rgba(249, 192, 19, 0.35), 0 8px 18px rgba(249, 192, 19, 0.25);
+        }
+
+        #modal-main-content {
+            border-color: rgba(56, 189, 248, 0.2) !important;
+            background: rgba(4, 10, 26, 0.62) !important;
+        }
+
+        #modal-main-content .modal-tab {
+            border: 1px solid transparent;
+        }
+
+        #modal-main-content .modal-tab:hover {
+            border-color: rgba(125, 211, 252, 0.28);
         }
 
         /* Utilities */
@@ -54,6 +338,7 @@
 
         .glass-panel {
             background: linear-gradient(135deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.01) 100%);
+            -webkit-backdrop-filter: blur(10px);
             backdrop-filter: blur(10px);
             border: 1px solid rgba(255, 255, 255, 0.05);
             box-shadow: inset 0 0 32px rgba(0, 0, 0, 0.2);
@@ -67,27 +352,450 @@
         .hide-scrollbar::-webkit-scrollbar {
             display: none;
         }
+
         .hide-scrollbar {
             -ms-overflow-style: none;
             scrollbar-width: none;
         }
 
+        .custom-scrollbar {
+            scrollbar-width: thin;
+            scrollbar-color: rgba(148, 163, 184, 0.8) rgba(15, 23, 42, 0.3);
+        }
+
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 10px;
+            height: 10px;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: rgba(15, 23, 42, 0.35);
+            border-radius: 9999px;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: linear-gradient(180deg, rgba(148, 163, 184, 0.95), rgba(71, 85, 105, 0.9));
+            border-radius: 9999px;
+            border: 2px solid transparent;
+            background-clip: padding-box;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(180deg, rgba(203, 213, 225, 1), rgba(100, 116, 139, 0.95));
+            border: 2px solid transparent;
+            background-clip: padding-box;
+        }
+
         /* Animations */
         @keyframes float {
             0% { transform: translateY(0px); }
-            50% { transform: translateY(-20px); }
+            50% { transform: translateY(-14px); }
             100% { transform: translateY(0px); }
         }
+
         .animate-float {
-            animation: float 6s ease-in-out infinite;
+            animation: float 7s ease-in-out infinite;
+            will-change: transform;
         }
 
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
+            from { opacity: 0; transform: translateY(12px); }
             to { opacity: 1; transform: translateY(0); }
         }
+
         .animate-fade-in {
-            animation: fadeIn 0.5s ease-out forwards;
+            animation: fadeIn 0.42s ease-out forwards;
+            will-change: opacity, transform;
+        }
+
+        /* Smooth Gradient Animation (Welcome Name) */
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .animate-gradient {
+            background-size: 200% 200%;
+            animation: gradientShift 5s ease-in-out infinite;
+        }
+
+        /* Login Button Shimmer */
+        .btn-shimmer {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-shimmer::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -60%;
+            width: 40%;
+            height: 200%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.15), transparent);
+            transform: skewX(-20deg);
+            transition: none;
+            pointer-events: none;
+        }
+
+        .btn-shimmer:hover::after {
+            animation: btnShimmer 0.7s ease forwards;
+        }
+
+        @keyframes btnShimmer {
+            to { left: 130%; }
+        }
+
+        /* Skeleton Loading Shimmer */
+        @keyframes skeletonShimmer {
+            0% { background-position: -200% 0; }
+            100% { background-position: 200% 0; }
+        }
+
+        .skeleton {
+            background: linear-gradient(90deg, rgba(255, 255, 255, 0.03) 25%, rgba(255, 255, 255, 0.08) 50%, rgba(255, 255, 255, 0.03) 75%);
+            background-size: 200% 100%;
+            animation: skeletonShimmer 1.8s ease infinite;
+            border-radius: 0.75rem;
+        }
+
+        /* Pulsing Glow (Calendar Today) */
+        @keyframes pulseGlow {
+            0%, 100% { box-shadow: 0 0 8px rgba(38, 94, 155, 0.4), 0 4px 12px rgba(38, 94, 155, 0.2); }
+            50% { box-shadow: 0 0 16px rgba(38, 94, 155, 0.5), 0 4px 16px rgba(38, 94, 155, 0.35); }
+        }
+
+        .pulse-glow {
+            animation: pulseGlow 2.5s ease-in-out infinite;
+        }
+
+        /* Sidebar Active Indicator */
+        .sidebar-active-indicator {
+            position: relative;
+        }
+
+        .sidebar-active-indicator::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 4px;
+            height: 60%;
+            border-radius: 0 4px 4px 0;
+            background: linear-gradient(180deg, #F9C013, #FD8024);
+            box-shadow: 0 0 12px rgba(249, 192, 19, 0.4);
+        }
+
+        /* Tab Sliding Indicator */
+        .tab-container {
+            position: relative;
+        }
+
+        .tab-indicator {
+            position: absolute;
+            bottom: 0;
+            height: 3px;
+            background: linear-gradient(90deg, #F9C013, #FD8024);
+            border-radius: 3px 3px 0 0;
+            transition: left 0.3s ease, width 0.3s ease;
+            box-shadow: 0 0 8px rgba(249, 192, 19, 0.5);
+        }
+
+        /* Timeline Stepper */
+        .timeline-step {
+            position: relative;
+            padding-left: 2.5rem;
+        }
+
+        .timeline-step::before {
+            content: '';
+            position: absolute;
+            left: 10px;
+            top: 28px;
+            bottom: -8px;
+            width: 2px;
+            background: linear-gradient(180deg, rgba(38, 94, 155, 0.3), transparent);
+        }
+
+        .timeline-step:last-child::before {
+            display: none;
+        }
+
+        .timeline-step .step-dot {
+            position: absolute;
+            left: 4px;
+            top: 6px;
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            background: #265E9B;
+            border: 3px solid #0F172A;
+            box-shadow: 0 0 0 2px rgba(38, 94, 155, 0.3), 0 0 10px rgba(38, 94, 155, 0.2);
+        }
+
+        /* Scroll Fade Gradient */
+        .scroll-fade-container {
+            position: relative;
+        }
+
+        .scroll-fade-container::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 40px;
+            background: linear-gradient(transparent, rgba(30, 41, 59, 0.95));
+            pointer-events: none;
+            border-radius: 0 0 1.5rem 1.5rem;
+            z-index: 1;
+        }
+
+        /* Login Input Focus Animation */
+        .input-icon-animated {
+            transition: all 0.3s ease;
+        }
+
+        .group:focus-within .input-icon-animated {
+            transform: translateY(-50%) scale(1.12);
+            filter: drop-shadow(0 0 7px rgba(38, 94, 155, 0.55));
+        }
+
+        /* Class Card Left Accent */
+        .class-accent-border {
+            border-left: 3px solid transparent;
+            transition: border-color 0.3s ease;
+        }
+
+        /* Star Twinkle (Login Background) */
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.2; transform: scale(1); }
+            50% { opacity: 0.75; transform: scale(1.35); }
+        }
+
+        .star {
+            position: absolute;
+            width: 3px;
+            height: 3px;
+            background: white;
+            border-radius: 50%;
+            animation: twinkle var(--duration, 3s) ease-in-out infinite;
+            animation-delay: var(--delay, 0s);
+            pointer-events: none;
+        }
+
+        /* Scroll to Top Button */
+        .scroll-top-btn {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            z-index: 50;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.3s ease;
+            pointer-events: none;
+        }
+
+        .scroll-top-btn.visible {
+            opacity: 1;
+            transform: translateY(0);
+            pointer-events: auto;
+        }
+
+        /* Carousel */
+        .carousel-track {
+            display: flex;
+            transition: transform 0.5s ease-in-out;
+            width: 100%;
+        }
+        .carousel-slide {
+            min-width: 100%;
+            flex-shrink: 0;
+        }
+        .carousel-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        .carousel-dot.active {
+            background: #F9C013;
+            width: 24px;
+            border-radius: 4px;
+        }
+
+        /* Announcement */
+        .announcement-item {
+            border-left: 3px solid transparent;
+            transition: all 0.2s ease;
+        }
+
+        .announcement-item:hover {
+            background: rgba(255, 255, 255, 0.03);
+            border-left-color: #F9C013;
+        }
+
+        .announcement-cta-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.45rem;
+            width: auto;
+            min-width: 8rem;
+            padding: 0.62rem 1rem;
+            border-radius: 0.75rem;
+            border: 1px solid rgba(125, 211, 252, 0.35);
+            background: linear-gradient(180deg, rgba(56, 189, 248, 0.22), rgba(37, 99, 235, 0.85));
+            color: #fff;
+            font-weight: 700;
+            font-size: 0.82rem;
+            letter-spacing: 0.01em;
+            transition: transform 0.2s ease, box-shadow 0.2s ease, opacity 0.2s ease;
+            box-shadow: 0 10px 20px rgba(14, 116, 144, 0.28);
+        }
+
+        .announcement-cta-btn:hover:not(:disabled) {
+            transform: translateY(-1px);
+            box-shadow: 0 14px 26px rgba(14, 116, 144, 0.34);
+        }
+
+        .announcement-cta-btn.is-email {
+            border-color: rgba(249, 192, 19, 0.4);
+            background: linear-gradient(180deg, rgba(249, 192, 19, 0.2), rgba(217, 119, 6, 0.9));
+            color: #ffffff;
+            box-shadow: 0 10px 20px rgba(217, 119, 6, 0.24);
+        }
+
+        .announcement-cta-btn.is-exit {
+            border-color: rgba(148, 163, 184, 0.38);
+            background: linear-gradient(180deg, rgba(51, 65, 85, 0.9), rgba(30, 41, 59, 0.9));
+            color: #e2e8f0;
+            box-shadow: 0 10px 20px rgba(15, 23, 42, 0.32);
+        }
+
+        .announcement-cta-btn:disabled {
+            cursor: not-allowed;
+            opacity: 0.55;
+            transform: none;
+            box-shadow: none;
+        }
+
+        #banner-modal .banner-shell {
+            background:
+                radial-gradient(circle at 15% 12%, rgba(56, 189, 248, 0.2), transparent 35%),
+                radial-gradient(circle at 85% 85%, rgba(249, 192, 19, 0.17), transparent 38%),
+                linear-gradient(180deg, rgba(2, 6, 23, 0.96), rgba(2, 6, 23, 0.92));
+        }
+
+        #banner-track {
+            min-height: clamp(200px, 35vh, 320px);
+        }
+
+        @supports not ((-webkit-backdrop-filter: blur(1px)) or (backdrop-filter: blur(1px))) {
+            .ui-card,
+            .ui-card-soft,
+            .glass,
+            .glass-panel {
+                background: rgba(15, 23, 42, 0.88);
+            }
+        }
+
+        @media (max-width: 1366px) {
+            html {
+                font-size: 15px;
+            }
+
+            #home-view,
+            #dashboard-view {
+                padding: 1.25rem !important;
+            }
+
+            #session-grid .grid {
+                gap: 1rem !important;
+            }
+
+            #program-grid > button {
+                min-height: 10.25rem;
+            }
+
+            #header-title {
+                font-size: clamp(1.55rem, 2vw, 1.9rem) !important;
+            }
+
+            #modal-title {
+                font-size: clamp(2rem, 3vw, 2.7rem) !important;
+            }
+        }
+
+        @media (max-height: 780px) {
+            #auth-overlay {
+                align-items: flex-start;
+                padding: 1rem;
+                overflow-y: auto;
+            }
+        }
+
+        @media (max-height: 860px) {
+            #auth-overlay .ui-card {
+                max-width: 26rem;
+                padding: 1.35rem !important;
+            }
+
+            #auth-overlay h2 {
+                font-size: 1.7rem !important;
+                line-height: 1.2 !important;
+            }
+
+            #auth-overlay .mb-10 {
+                margin-bottom: 1.2rem !important;
+            }
+        }
+
+        @media (max-width: 768px) {
+            #session-modal,
+            #class-modal {
+                padding: 0.75rem;
+            }
+
+            #modal-main-content {
+                width: 100%;
+                overflow-x: auto;
+            }
+
+            #modal-main-content .modal-tab {
+                white-space: nowrap;
+            }
+
+            #mobile-back-btn,
+            #back-home-btn {
+                min-height: 2.75rem;
+            }
+
+            #calendar-widget button,
+            #todays-classes-widget button {
+                min-width: 2.75rem;
+                min-height: 2.75rem;
+            }
+
+            .scroll-top-btn {
+                bottom: 1.25rem;
+                right: 1.25rem;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            *,
+            *::before,
+            *::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+                scroll-behavior: auto !important;
+            }
         }
     </style>
 </head>
@@ -97,8 +805,17 @@
     <div id="auth-overlay" class="fixed inset-0 z-[100] flex items-center justify-center bg-[#020617] bg-[url('https://cdn-web-2.ruangguru.com/landing-pages/assets/f0bdb7b1-55d4-4337-8295-e8513f785caf.png')] bg-cover bg-center">
         <!-- Overlay Darkener -->
         <div class="absolute inset-0 bg-[#020617]/60 backdrop-blur-sm"></div>
+        <!-- Twinkling Stars -->
+        <div class="star" style="top:10%;left:15%;--duration:3s;--delay:0s"></div>
+        <div class="star" style="top:25%;left:80%;--duration:4s;--delay:1s"></div>
+        <div class="star" style="top:60%;left:25%;--duration:3.5s;--delay:0.5s"></div>
+        <div class="star" style="top:40%;left:70%;--duration:5s;--delay:2s"></div>
+        <div class="star" style="top:75%;left:50%;--duration:3s;--delay:1.5s"></div>
+        <div class="star" style="top:15%;left:45%;--duration:4.5s;--delay:0.8s"></div>
+        <div class="star" style="top:85%;left:85%;--duration:3.8s;--delay:1.2s"></div>
+        <div class="star" style="top:50%;left:10%;--duration:4.2s;--delay:0.3s"></div>
 
-        <div class="w-full max-w-md bg-[#0F172A]/70 border border-white/10 rounded-[2rem] p-8 md:p-10 shadow-2xl relative overflow-hidden animate-fade-in backdrop-blur-xl ring-1 ring-white/5">
+        <div class="ui-card w-full max-w-md p-8 md:p-10 relative overflow-hidden animate-fade-in ring-1 ring-white/5">
             <!-- Background Decoration -->
             <div class="absolute top-0 right-0 -mr-16 -mt-16 w-64 h-64 rounded-full bg-brand-blue/20 blur-3xl pointer-events-none"></div>
             <div class="absolute bottom-0 left-0 -ml-16 -mb-16 w-64 h-64 rounded-full bg-brand-yellow/10 blur-3xl pointer-events-none"></div>
@@ -107,28 +824,28 @@
                 <div class="w-20 h-20 mx-auto mb-6 bg-white/5 rounded-2xl flex items-center justify-center border border-white/10 shadow-inner backdrop-blur-md">
                     <img src="https://cdn-web-2.ruangguru.com/landing-pages/assets/545c0426-169c-406f-8775-93afcacef50a.png" alt="Kalananti" class="h-10 object-contain drop-shadow-md">
                 </div>
-                <h2 class="text-3xl font-black text-white mb-3 tracking-tight">Teacher Portal</h2>
-                <p class="text-slate-400 text-sm font-medium">Please sign in to access your dashboard</p>
+                <h2 class="text-3xl font-black text-white mb-3 tracking-tight">Kalananti Curriculum Command</h2>
+                <p class="text-slate-400 text-sm font-medium">Masuk untuk akses kurikulum, sesi kelas, dan resource pengajar.</p>
             </div>
 
             <form id="login-form" class="space-y-6 relative z-10">
                 <div class="space-y-2">
                     <label for="username" class="text-xs font-bold text-brand-yellow uppercase tracking-widest ml-1">Akademia Registered Email</label>
                     <div class="relative group">
-                        <input type="email" id="username" placeholder="name@example.com" class="w-full bg-[#020617]/50 border border-white/10 rounded-2xl px-5 py-4 text-white placeholder:text-slate-600 focus:outline-none focus:border-brand-blue/50 focus:ring-1 focus:ring-brand-blue/50 focus:bg-[#020617]/80 transition-all font-medium" required>
-                        <div class="absolute right-4 top-1/2 -translate-y-1/2 text-slate-600 group-focus-within:text-brand-blue transition-colors pointer-events-none">
+                        <input type="email" id="username" placeholder="name@example.com" class="w-full ui-control px-5 py-4 text-white placeholder:text-slate-500 focus:outline-none focus:border-brand-blue/60 focus:ring-1 focus:ring-brand-blue/40 focus:bg-[#020617]/90 font-medium" required>
+                        <div class="absolute right-4 top-1/2 -translate-y-1/2 text-slate-600 group-focus-within:text-brand-blue transition-colors pointer-events-none input-icon-animated">
                             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
                         </div>
                     </div>
                 </div>
                 <p id="login-error" class="hidden text-xs font-medium text-red-300 bg-red-500/10 border border-red-500/30 rounded-xl px-4 py-3"></p>
-                <button type="submit" class="w-full bg-gradient-to-r from-brand-blue to-blue-600 hover:from-blue-600 hover:to-brand-blue text-white font-bold py-4 rounded-2xl transition-all flex items-center justify-center gap-3 shadow-lg shadow-brand-blue/25 hover:shadow-brand-blue/40 transform hover:-translate-y-0.5">
+                <button type="submit" class="btn-shimmer ui-card-hover w-full bg-gradient-to-r from-brand-blue to-blue-600 hover:from-blue-600 hover:to-brand-blue text-white font-bold py-4 rounded-2xl transition-all flex items-center justify-center gap-3 shadow-lg shadow-brand-blue/25 hover:shadow-brand-blue/40">
                     <span>Access Portal</span>
                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg>
                 </button>
             </form>
             
-            <p class="mt-8 text-center text-[10px] text-slate-500 font-medium uppercase tracking-wider">
+            <p class="mt-8 text-center text-[11px] text-slate-500 font-medium uppercase tracking-wider">
                 Authorized Personnel Only
             </p>
         </div>
@@ -138,7 +855,7 @@
     <div id="app-container" class="flex min-h-screen relative opacity-0 transition-opacity duration-500">
         
         <!-- Sidebar (Desktop) -->
-        <aside class="hidden md:flex w-64 bg-[#0F172A] border-r border-white/10 p-6 overflow-y-auto z-20 shrink-0 flex-col h-screen sticky top-0">
+        <aside class="hidden md:flex w-64 bg-[#0F172A]/95 border-r border-white/10 p-6 overflow-y-auto z-20 shrink-0 flex-col h-screen sticky top-0">
             <div class="mb-8 pl-2">
                 <img src="https://uob-1328237036.cos.ap-singapore.myqcloud.com//file-uploader/images/94907efd-30d9-49af-8e62-aa4aee51ad33.png" alt="RG Coding" class="h-16 object-contain mb-4 drop-shadow-md brightness-110">
             </div>
@@ -155,12 +872,12 @@
             
             <!-- Report Issue Button -->
             <a href="mailto:ahmadyazid.ruangguru@gmail.com,laras.kalananti@gmail.com?cc=aldeina@kalananti.id&subject=Curriculum%20Feedback%20%2F%20Issue%20Report&body=Hi%20Academic%20Team%2C%0A%0AI%20would%20like%20to%20report%20an%20issue%20or%20provide%20feedback%20regarding%20the%20curriculum.%0A%0ADetails%3A%0A" 
-               class="mt-4 w-full bg-white/5 hover:bg-white/10 border border-white/10 rounded-xl p-3 flex items-center gap-3 transition-all group mb-2">
+               class="ui-control ui-card-hover mt-4 w-full rounded-xl p-3 flex items-center gap-3 transition-all group mb-2">
                 <div class="w-8 h-8 rounded-lg bg-red-500/20 text-red-400 flex items-center justify-center group-hover:scale-110 transition-transform">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><line x1="12" y1="8" x2="12" y2="8"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
                 </div>
                 <div class="text-left">
-                    <div class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Need Help?</div>
+                    <div class="text-[11px] font-bold text-slate-400 uppercase tracking-wider">Need Help?</div>
                     <div class="text-xs font-bold text-white">Report Issue</div>
                 </div>
             </a>
@@ -171,17 +888,17 @@
         </aside>
 
         <!-- Main Content -->
-        <main class="flex-1 flex flex-col min-h-screen bg-[#020617]/90 md:rounded-l-3xl border-l border-white/10 shadow-2xl relative overflow-x-hidden">
+        <main class="flex-1 flex flex-col min-h-screen bg-[#020617]/88 md:rounded-l-3xl border-l border-white/10 shadow-2xl relative overflow-x-hidden">
             
             <!-- Header -->
-            <header class="px-4 py-4 md:px-8 md:py-6 border-b border-white/10 bg-[#020617]/95 z-20 flex flex-col md:flex-row md:items-start justify-between gap-4 sticky top-0">
+            <header class="px-4 py-4 md:px-8 md:py-6 border-b border-white/10 bg-[#020617]/92 backdrop-blur-md z-20 flex flex-col md:flex-row md:items-start justify-between gap-4 sticky top-0">
                 <div class="flex-1">
                      <!-- Mobile Back Button -->
                     <button id="mobile-back-btn" class="md:hidden flex items-center gap-2 text-zinc-400 hover:text-white mb-4 text-xs font-bold uppercase tracking-wider hidden">
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="rotate-180"><path d="m9 18 6-6-6-6"/></svg> Back to Home
                     </button>
 
-                    <h1 id="header-title" class="text-2xl md:text-3xl font-bold text-white mt-2 drop-shadow-lg opacity-80">Dashboard</h1>
+                    <h1 id="header-title" class="text-2xl md:text-3xl font-bold text-white mt-2 drop-shadow-lg opacity-95">Dashboard</h1>
                     <div id="breadcrumbs" class="hidden md:flex items-center gap-2 text-xs text-slate-400 mt-1 uppercase tracking-wider">
                         <!-- Breadcrumbs injected here -->
                     </div>
@@ -189,9 +906,13 @@
 
                 <div class="flex items-center gap-6 self-end md:self-auto">
                     <div class="relative hidden md:block">
-                        <input type="text" id="search-input" placeholder="Search..." class="bg-white/5 border border-white/20 rounded-full py-2 px-4 pl-10 text-sm text-white focus:outline-none focus:border-brand-yellow/50 w-64 transition-all placeholder:text-slate-400">
+                        <input type="text" id="search-input" placeholder="Search..." class="ui-control rounded-full py-2.5 px-4 pl-10 text-sm text-white focus:outline-none focus:border-brand-yellow/60 focus:ring-1 focus:ring-brand-yellow/30 w-64 placeholder:text-slate-400">
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-slate-400 absolute left-3 top-2.5"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
                     </div>
+                    <button id="announcement-btn" type="button" class="hidden relative ui-control w-10 h-10 rounded-full text-slate-300 hover:text-white flex items-center justify-center transition-all" title="Announcement" aria-label="Open announcement">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 17h5l-1.4-1.4A2 2 0 0 1 18 14.2V11a6 6 0 1 0-12 0v3.2a2 2 0 0 1-.6 1.4L4 17h5"/><path d="M9 17a3 3 0 0 0 6 0"/></svg>
+                        <span id="announcement-dot" class="hidden absolute top-1 right-1 w-2.5 h-2.5 rounded-full bg-brand-yellow shadow-[0_0_8px_rgba(249,192,19,0.9)]"></span>
+                    </button>
                     <div class="h-8 w-px bg-white/10 mx-2 hidden md:block"></div>
                     <img src="https://cdn-web-2.ruangguru.com/landing-pages/assets/545c0426-169c-406f-8775-93afcacef50a.png" alt="Kalananti" class="h-12 md:h-14 object-contain drop-shadow-md">
                 </div>
@@ -208,7 +929,7 @@
                     </div>
 
                     <!-- Rocket -->
-                    <img src="https://cdn-web-2.ruangguru.com/landing-pages/assets/6efdf045-19f7-4d90-8a14-cf797238f73d.png" alt="Rocket" class="absolute top-10 left-10 md:left-20 w-32 md:w-64 z-0 opacity-60 drop-shadow-[0_0_30px_rgba(253,128,36,0.5)] animate-float pointer-events-none">
+                    <img src="https://cdn-web-2.ruangguru.com/landing-pages/assets/6efdf045-19f7-4d90-8a14-cf797238f73d.png" alt="Rocket" class="absolute top-10 left-10 md:left-20 w-32 md:w-64 z-0 opacity-0 md:opacity-60 drop-shadow-[0_0_30px_rgba(253,128,36,0.5)] animate-float pointer-events-none">
 
                     <!-- Character -->
                     <img src="https://cdn-web-2.ruangguru.com/landing-pages/assets/555e14a0-4087-4d33-9c20-4d822bef5dac.png" alt="Character" class="absolute bottom-10 right-10 md:right-20 w-48 md:w-80 z-0 opacity-100 animate-fade-in pointer-events-none" style="animation-delay: 0.2s">
@@ -218,15 +939,16 @@
                          <!-- Left Column (Main Content) -->
                          <div class="lg:col-span-8 space-y-8">
                              <!-- Welcome Text -->
-                             <div class="animate-fade-in pl-4 md:pl-0">
-                                <div class="inline-block px-4 py-1 rounded-full bg-brand-yellow/20 border border-brand-yellow/50 text-brand-yellow font-bold text-sm tracking-wider uppercase mb-4 backdrop-blur-sm">
-                                    Curriculum Portal
+                            <!-- Focus Mode Hero -->
+                             <div class="animate-fade-in pl-4 md:pl-0 relative z-20">
+                                <div class="inline-block px-4 py-1 rounded-full bg-brand-yellow/20 border border-brand-yellow/50 text-brand-yellow font-bold text-sm tracking-wider uppercase mb-4 backdrop-blur-sm shadow-[0_0_15px_rgba(249,192,19,0.3)]">
+                                    Kalananti • Teacher Command Center
                                 </div>
-                                <h2 class="text-3xl md:text-5xl font-extrabold text-white tracking-tight mb-2">
-                                    Welcome, <span id="welcome-name" class="text-transparent bg-clip-text bg-gradient-to-r from-brand-yellow to-brand-orange">Teacher!</span>
+                                <h2 class="text-3xl md:text-5xl font-extrabold text-white tracking-tight mb-2 drop-shadow-xl">
+                                    Rancang kelas dengan cepat, <span id="welcome-name" class="text-transparent bg-clip-text bg-gradient-to-r from-brand-yellow via-orange-400 to-brand-orange animate-gradient">Teacher!</span>
                                 </h2>
-                                <p class="text-blue-200/80 text-lg">
-                                    Here's what's happening today at Kalananti.
+                                <p class="text-blue-200/80 text-base md:text-lg mt-2">
+                                    Semua sesi, level, materi, dan absensi ada dalam satu command center.
                                 </p>
                              </div>
 
@@ -244,44 +966,31 @@
 
                          <!-- Right Column (Sidebar) -->
                          <div class="lg:col-span-4 space-y-6">
-                            <!-- Calendar Widget -->
-                            <div id="calendar-widget" class="bg-[#1e293b]/60 border border-white/10 rounded-3xl p-6 backdrop-blur-md animate-fade-in shadow-xl" style="animation-delay: 0.4s">
-                                 <div class="flex items-center justify-between mb-6">
-                                    <h3 id="calendar-month" class="text-lg font-bold text-white capitalize">Month Year</h3>
-                                    <div class="flex gap-1 bg-white/5 rounded-lg p-1">
-                                        <button onclick="changeMonth(-1)" aria-label="Previous Month" class="p-1 hover:bg-white/10 rounded-md transition-colors text-slate-400 hover:text-white">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
+                            <!-- Calendar Widget (Week View) -->
+                            <div id="calendar-widget" class="ui-card p-6 animate-fade-in mb-6">
+                                 <div class="flex items-center justify-between mb-4">
+                                    <h3 class="text-xs font-bold text-slate-400 uppercase tracking-widest flex items-center gap-2">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="4" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                                        Schedule
+                                    </h3>
+                                    <div class="flex items-center gap-3 bg-white/5 rounded-full px-2 py-1">
+                                        <button onclick="changeMonth(-1)" aria-label="Previous Week" class="p-2 hover:bg-white/10 rounded-full transition-colors text-slate-400 hover:text-white">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
                                         </button>
-                                        <button onclick="changeMonth(1)" aria-label="Next Month" class="p-1 hover:bg-white/10 rounded-md transition-colors text-slate-400 hover:text-white">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+                                        <span id="calendar-month" class="text-[11px] font-bold text-white uppercase tracking-wider min-w-[60px] text-center">...</span>
+                                        <button onclick="changeMonth(1)" aria-label="Next Week" class="p-2 hover:bg-white/10 rounded-full transition-colors text-slate-400 hover:text-white">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
                                         </button>
                                     </div>
                                  </div>
                                  
-                                 <div class="grid grid-cols-7 gap-1 text-center mb-4">
-                                    <span class="text-[10px] font-bold text-slate-500 uppercase tracking-wider">Su</span>
-                                    <span class="text-[10px] font-bold text-slate-500 uppercase tracking-wider">Mo</span>
-                                    <span class="text-[10px] font-bold text-slate-500 uppercase tracking-wider">Tu</span>
-                                    <span class="text-[10px] font-bold text-slate-500 uppercase tracking-wider">We</span>
-                                    <span class="text-[10px] font-bold text-slate-500 uppercase tracking-wider">Th</span>
-                                    <span class="text-[10px] font-bold text-slate-500 uppercase tracking-wider">Fr</span>
-                                    <span class="text-[10px] font-bold text-slate-500 uppercase tracking-wider">Sa</span>
-                                 </div>
-                                 
-                                 <div id="calendar-days" class="grid grid-cols-7 gap-1 text-center text-sm">
-                                     <!-- Computed Days -->
-                                 </div>
-
-                                 <div class="mt-6 pt-6 border-t border-white/5">
-                                     <div class="flex items-center justify-between">
-                                         <span class="text-xs font-bold text-slate-400 uppercase tracking-wider">Today</span>
-                                         <span id="calendar-today-date" class="text-xs text-white">Date</span>
-                                     </div>
+                                 <div id="calendar-days" class="grid grid-cols-7 gap-2">
+                                     <!-- Week Days injected here -->
                                  </div>
                             </div>
 
                              <!-- Today's Classes Widget -->
-                             <div id="todays-classes-widget" class="bg-[#1e293b]/60 border border-white/10 rounded-3xl p-6 backdrop-blur-md animate-fade-in shadow-xl relative overflow-hidden group" style="animation-delay: 0.5s">
+                             <div id="todays-classes-widget" class="ui-card p-6 animate-fade-in relative overflow-hidden group scroll-fade-container" style="animation-delay: 0.5s">
                                 <div class="absolute top-0 right-0 p-3 opacity-10 group-hover:opacity-20 transition-opacity">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
                                 </div>
@@ -289,25 +998,24 @@
                                     <div>
                                         <h3 class="text-lg font-bold text-white mb-1 flex items-center gap-2">
                                             Today's Classes
-                                            <span class="px-2 py-0.5 rounded text-[10px] bg-brand-blue/20 text-brand-blue border border-brand-blue/30 uppercase tracking-wider" id="today-day-label">Downloading...</span>
+                                            <span class="px-2 py-0.5 rounded text-[11px] bg-brand-blue/20 text-brand-blue border border-brand-blue/30 uppercase tracking-wider" id="today-day-label">Downloading...</span>
                                         </h3>
                                         <p class="text-slate-400 text-xs leading-relaxed">Your active sessions for today.</p>
                                         <p id="class-source-note" class="hidden mt-1 text-[11px] text-amber-300/90 font-medium"></p>
                                     </div>
-                                    <button onclick="openClassModal()" class="p-2 bg-white/5 hover:bg-white/10 border border-white/10 rounded-lg text-slate-300 hover:text-white transition-all">
+                                    <button onclick="openClassModal()" class="ui-control p-2 rounded-lg text-slate-300 hover:text-white transition-all">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="M3 9h18"/><path d="M9 21V9"/></svg>
                                     </button>
                                 </div>
                                 
-                                <div id="todays-classes-list" class="space-y-2 relative z-10 max-h-48 overflow-y-auto custom-scrollbar">
+                                <div id="todays-classes-list" class="space-y-2 relative z-10 max-h-72 overflow-y-auto custom-scrollbar pb-4">
                                     <!-- Classes injected here -->
-                                    <div class="p-3 bg-black/20 rounded-lg border border-white/5 text-center animate-pulse">
-                                        <span class="text-xs text-slate-500">Loading classes...</span>
-                                    </div>
+                                    <div class="skeleton h-16 mb-2"></div>
+                                    <div class="skeleton h-16 mb-2"></div>
                                 </div>
                                 
-                                <button onclick="openClassModal()" class="w-full mt-4 py-2 text-xs font-bold text-center text-slate-400 hover:text-white border-t border-white/5 pt-3 transition-colors">
-                                    View All Classes →
+                                <button onclick="openClassModal()" class="w-full mt-4 py-3 text-xs font-bold text-center text-slate-300 hover:text-white border-t border-white/5 transition-colors">
+                                    Lihat Semua Kelas Active →
                                 </button>
                              </div>
                          </div>
@@ -339,7 +1047,7 @@
         
         <div class="relative min-h-[calc(100vh-4rem)] w-full max-w-6xl mx-auto flex flex-col animate-fade-in group">
             <!-- Modal Container -->
-            <div class="relative flex-1 bg-[#0F172A]/80 border border-white/10 rounded-[2rem] shadow-2xl overflow-hidden backdrop-blur-2xl ring-1 ring-white/5 flex flex-col">
+            <div class="ui-card relative flex-1 rounded-[2rem] overflow-hidden ring-1 ring-white/5 flex flex-col">
                 
                 <!-- Background Gradients -->
                 <div class="absolute top-0 right-0 -mt-20 -mr-20 w-96 h-96 bg-brand-blue/20 rounded-full blur-3xl pointer-events-none"></div>
@@ -352,7 +1060,7 @@
                         <!-- Normal Header -->
                         <div id="modal-header-normal" class="flex-1 min-w-0">
                              <div class="flex items-center gap-3 mb-4">
-                                 <span id="modal-level" class="px-3 py-1 rounded-full bg-brand-yellow text-black text-[10px] font-bold uppercase tracking-wider shadow-lg shadow-brand-yellow/20">Level</span>
+                                 <span id="modal-level" class="px-3 py-1 rounded-full bg-brand-yellow text-black text-[11px] font-bold uppercase tracking-wider shadow-lg shadow-brand-yellow/20">Level</span>
                                  <span class="w-1 h-1 rounded-full bg-white/20"></span>
                                  <span id="modal-order" class="text-slate-400 text-xs font-medium uppercase tracking-wider">Session</span>
                                  <span class="w-1 h-1 rounded-full bg-white/20"></span>
@@ -365,7 +1073,7 @@
 
                         <!-- Preview Header -->
                         <div id="modal-header-preview" class="hidden flex-1 flex items-center gap-4">
-                            <button onclick="closePreview()" class="group/btn flex items-center gap-3 pl-3 pr-5 py-2.5 rounded-full bg-white/10 hover:bg-white/20 text-white transition-all border border-white/10 hover:border-white/30 backdrop-blur-md">
+                            <button onclick="closePreview()" class="group/btn ui-control flex items-center gap-3 pl-3 pr-5 py-2.5 rounded-full text-white transition-all">
                                 <div class="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center group-hover/btn:scale-90 transition-transform">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
                                 </div>
@@ -377,8 +1085,8 @@
 
                         <!-- Actions -->
                         <div class="flex items-center gap-4 shrink-0">
-                             <button onclick="closeModal()" class="w-12 h-12 rounded-full bg-white/5 hover:bg-white/10 hover:rotate-90 text-slate-400 hover:text-white transition-all duration-300 flex items-center justify-center border border-white/5 hover:border-white/20 backdrop-blur-md shadow-lg" aria-label="Close">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 18 18"/></svg>
+                             <button onclick="closeModal()" class="ui-control w-12 h-12 rounded-full text-slate-300 hover:text-red-400 transition-all duration-300 flex items-center justify-center hover:border-red-500/40 shadow-lg hover:scale-105" aria-label="Close">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
                             </button>
                         </div>
                     </div>
@@ -421,7 +1129,7 @@
                                 <!-- Main Info -->
                                 <div class="lg:col-span-8 space-y-8">
                                     <!-- Objective Card -->
-                                    <div class="relative group rounded-3xl bg-gradient-to-br from-white/5 to-white/0 border border-white/10 p-8 overflow-hidden hover:border-brand-blue/30 transition-colors">
+                                    <div class="ui-card-soft ui-card-hover relative group rounded-3xl p-8 overflow-hidden hover:border-brand-blue/30">
                                         <div class="absolute top-0 right-0 p-6 opacity-10">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
                                         </div>
@@ -441,9 +1149,9 @@
 
                                 <!-- Sidebar Info -->
                                 <div class="lg:col-span-4 space-y-6">
-                                    <div class="p-6 rounded-3xl bg-[#020617]/50 border border-white/5 backdrop-blur-sm">
+                                    <div class="ui-card-soft p-6 rounded-3xl">
                                         <div class="mb-6">
-                                            <h4 class="text-teal-400 font-bold uppercase tracking-wider text-[10px] mb-3 flex items-center gap-2">
+                                            <h4 class="text-teal-400 font-bold uppercase tracking-wider text-[11px] mb-3 flex items-center gap-2">
                                                 <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
                                                 Mastery Focus
                                             </h4>
@@ -451,9 +1159,9 @@
                                         </div>
                                         <div class="h-px bg-white/5 w-full mb-6"></div>
                                         <div>
-                                            <h4 class="text-brand-orange font-bold uppercase tracking-wider text-[10px] mb-3 flex items-center gap-2">
+                                            <h4 class="text-brand-orange font-bold uppercase tracking-wider text-[11px] mb-3 flex items-center gap-2">
                                                 <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M2 12h20"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
-                                                Theme Theme
+                                                Theme
                                             </h4>
                                             <div id="modal-theme" class="text-white font-bold text-lg">...</div>
                                         </div>
@@ -504,14 +1212,14 @@
         <div class="fixed inset-0 bg-[#020617]/95 backdrop-blur-xl transition-opacity duration-300" onclick="closeClassModal()"></div>
         
         <div class="relative min-h-[calc(100vh-4rem)] w-full max-w-5xl mx-auto flex flex-col animate-fade-in">
-            <div class="relative flex-1 bg-[#0F172A]/90 border border-white/10 rounded-[2rem] shadow-2xl overflow-hidden backdrop-blur-2xl ring-1 ring-white/5 flex flex-col">
+            <div class="ui-card relative flex-1 rounded-[2rem] overflow-hidden ring-1 ring-white/5 flex flex-col">
                 <!-- Header -->
                 <div class="p-8 md:p-10 border-b border-white/5 bg-gradient-to-r from-white/5 to-transparent flex items-center justify-between">
                     <div>
-                        <h2 class="text-3xl font-black text-white mb-2">Class Database</h2>
-                        <p class="text-slate-400">Manage and access all your assigned classes.</p>
+                        <h2 class="text-3xl font-black text-white mb-2">Semua Kelas Active</h2>
+                        <p class="text-slate-400">Akses cepat ke kurikulum dan absensi untuk seluruh kelas active kamu.</p>
                     </div>
-                    <button onclick="closeClassModal()" class="w-12 h-12 rounded-full bg-white/5 hover:bg-white/10 text-slate-400 hover:text-white transition-all flex items-center justify-center border border-white/5">
+                    <button onclick="closeClassModal()" class="ui-control w-12 h-12 rounded-full text-slate-300 hover:text-white transition-all flex items-center justify-center">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 18 18"/></svg>
                     </button>
                 </div>
@@ -524,6 +1232,36 @@
                             <p class="text-slate-500">Loading your classes...</p>
                         </div>
                     </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Announcement Modal -->
+    <div id="announcement-modal" class="hidden fixed inset-0 z-[240] overflow-y-auto p-4 md:p-8">
+        <div class="fixed inset-0 bg-[#020617]/95 backdrop-blur-xl transition-opacity duration-300" onclick="closeAnnouncementModal()"></div>
+        <div class="relative min-h-[calc(100vh-4rem)] w-full max-w-2xl mx-auto flex items-center justify-center animate-fade-in">
+            <div class="ui-card w-full rounded-[1.75rem] overflow-hidden ring-1 ring-white/10">
+                <div class="px-6 py-5 md:px-8 md:py-6 border-b border-white/10 bg-gradient-to-r from-brand-blue/20 to-transparent flex items-center justify-between gap-4">
+                    <div class="flex items-center gap-3 min-w-0">
+                        <div class="w-10 h-10 rounded-xl bg-brand-yellow/20 text-brand-yellow flex items-center justify-center border border-brand-yellow/40 shrink-0">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 17h5l-1.4-1.4A2 2 0 0 1 18 14.2V11a6 6 0 1 0-12 0v3.2a2 2 0 0 1-.6 1.4L4 17h5"/><path d="M9 17a3 3 0 0 0 6 0"/></svg>
+                        </div>
+                        <div class="min-w-0">
+                            <p id="announcement-date" class="text-[11px] uppercase tracking-[0.14em] text-slate-400 font-semibold">Announcement</p>
+                            <h3 id="announcement-title" class="text-lg md:text-2xl font-black text-white truncate">Announcement</h3>
+                        </div>
+                    </div>
+                    <button type="button" onclick="closeAnnouncementModal()" class="ui-control w-10 h-10 rounded-full text-slate-300 hover:text-white flex items-center justify-center transition-all" aria-label="Close announcement">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+                    </button>
+                </div>
+                <div class="px-6 py-6 md:px-8 md:py-7 space-y-6">
+                    <p id="announcement-message" class="text-slate-200 leading-relaxed whitespace-pre-line">Tidak ada pengumuman.</p>
+                    <button id="announcement-cta" type="button" class="hidden inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-brand-blue hover:bg-blue-600 text-white text-sm font-bold transition-all shadow-lg shadow-brand-blue/30">
+                        <span>Lihat Detail</span>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7"/><path d="M7 7h10v10"/></svg>
+                    </button>
                 </div>
             </div>
         </div>
@@ -569,6 +1307,7 @@
             programs: [],
             selectedProgram: null,
             selectedLevel: "Trial Class",
+            searchQuery: "",
             loading: true,
             activeModalTab: 'info',
             selectedSession: null,
@@ -577,7 +1316,12 @@
             classes: [],
             classFetchError: null,
             classWarnings: [],
-            classMode: null
+            classMode: null,
+            banners: [],
+            announcements: [],
+            announcementSeen: false,
+            bannerInterval: null,
+            currentBannerIndex: 0
         };
 
         // --- DOM Elements ---
@@ -594,10 +1338,18 @@
             dashboardView: document.getElementById('dashboard-view'),
             headerTitle: document.getElementById('header-title'),
             breadcrumbs: document.getElementById('breadcrumbs'),
+            searchInput: document.getElementById('search-input'),
+            announcementBtn: document.getElementById('announcement-btn'),
+            announcementDot: document.getElementById('announcement-dot'),
             levelTabs: document.getElementById('level-tabs'),
             sessionGrid: document.getElementById('session-grid'),
             backHomeBtn: document.getElementById('back-home-btn'),
             mobileBackBtn: document.getElementById('mobile-back-btn'),
+            announcementModal: document.getElementById('announcement-modal'),
+            announcementDate: document.getElementById('announcement-date'),
+            announcementTitle: document.getElementById('announcement-title'),
+            announcementMessage: document.getElementById('announcement-message'),
+            announcementCta: document.getElementById('announcement-cta'),
             sessionModal: document.getElementById('session-modal'),
             modalTitle: document.getElementById('modal-title'),
             modalSubtitle: document.getElementById('modal-subtitle'),
@@ -626,6 +1378,19 @@
             // For now, no persistence, just always show login on reload as per Request
             els.loginForm.addEventListener('submit', handleLogin);
             els.usernameInput.addEventListener('input', () => showLoginError(''));
+            if (els.searchInput) {
+                els.searchInput.addEventListener('input', handleSearchInput);
+                els.searchInput.addEventListener('keydown', (event) => {
+                    if (event.key === 'Escape') {
+                        els.searchInput.value = '';
+                        state.searchQuery = '';
+                        render();
+                    }
+                });
+            }
+            if (els.announcementBtn) {
+                els.announcementBtn.addEventListener('click', () => openAnnouncementList());
+            }
             
             // Back buttons
             els.backHomeBtn.addEventListener('click', () => setProgram(null));
@@ -647,6 +1412,20 @@
             
             // Initial Calendar
             renderCalendar();
+            
+            // Scroll to Top listener
+            const scrollBtn = document.getElementById('scroll-top-btn');
+            window.addEventListener('scroll', () => {
+                if (scrollBtn) scrollBtn.classList.toggle('visible', window.scrollY > 300);
+            });
+            document.addEventListener('keydown', (event) => {
+                if (event.key === 'Escape') {
+                     closeBannerModal();
+                     closeAnnouncementList();
+                     closeClassModal();
+                     closeSessionModal();
+                }
+            });
         }
 
         function buildApiUrl(params = {}) {
@@ -723,6 +1502,416 @@
             });
         }
 
+        function isTruthy(value) {
+            if (typeof value === 'boolean') return value;
+            if (typeof value === 'number') return value === 1;
+            const normalized = String(value || '').trim().toLowerCase();
+            return ['true', '1', 'yes', 'y', 'aktif', 'active'].includes(normalized);
+        }
+
+        function formatAnnouncementDate(value) {
+            if (!value) return '';
+            const parsed = new Date(value);
+            if (Number.isNaN(parsed.getTime())) {
+                return String(value);
+            }
+            return parsed.toLocaleDateString('id-ID', {
+                weekday: 'short',
+                day: '2-digit',
+                month: 'short',
+                year: 'numeric',
+            });
+        }
+
+        function normalizeEmailFromCta(value) {
+            const cleaned = String(value || '')
+                .replace(/^email\s*:/i, '')
+                .replace(/^mailto:/i, '')
+                .trim();
+            const match = cleaned.match(/[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}/i);
+            return match ? match[0].toLowerCase() : '';
+        }
+
+        function parseAnnouncementTarget(targetValue) {
+            const target = String(targetValue || '').trim();
+            if (!target) return { type: 'text', url: '' };
+
+            const normalized = target.toLowerCase();
+            if (['exit', 'close', 'dismiss', 'tutup'].includes(normalized)) {
+                return { type: 'exit', url: '' };
+            }
+
+            if (/^email\s*:/i.test(target) || /^mailto:/i.test(target)) {
+                const email = normalizeEmailFromCta(target);
+                return {
+                    type: 'email',
+                    url: email ? `mailto:${email}` : '',
+                };
+            }
+
+            if (/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(target)) {
+                return {
+                    type: 'email',
+                    url: `mailto:${target.toLowerCase()}`,
+                };
+            }
+
+            if (/^https?:\/\//i.test(target)) {
+                return { type: 'link', url: target };
+            }
+
+            if (/^[a-z0-9-]+(\.[a-z0-9-]+)+([\/?#].*)?$/i.test(target)) {
+                return { type: 'link', url: `https://${target}` };
+            }
+
+            return { type: 'text', url: '' };
+        }
+
+        function parseAnnouncementCta(value) {
+            const raw = String(value || '').trim();
+            if (!raw || raw === '-' || raw === '—') return null;
+
+            const parts = raw.split('|');
+            if (parts.length >= 2) {
+                const customLabel = parts[0].trim();
+                const parsedTarget = parseAnnouncementTarget(parts.slice(1).join('|').trim());
+                return {
+                    type: parsedTarget.type,
+                    url: parsedTarget.url,
+                    label:
+                        customLabel ||
+                        (parsedTarget.type === 'email'
+                            ? 'Email'
+                            : parsedTarget.type === 'exit'
+                                ? 'Exit'
+                                : 'Lihat Detail'),
+                };
+            }
+
+            const parsed = parseAnnouncementTarget(raw);
+            if (parsed.type === 'email') {
+                return { type: 'email', url: parsed.url, label: 'Email' };
+            }
+            if (parsed.type === 'exit') {
+                return { type: 'exit', url: '', label: 'Exit' };
+            }
+            if (parsed.type === 'link') {
+                return { type: 'link', url: parsed.url, label: 'Lihat Detail' };
+            }
+
+            return { type: 'text', url: '', label: raw };
+        }
+
+        function executeAnnouncementCta(cta, context = 'list') {
+            if (!cta) return;
+
+            if (cta.type === 'exit') {
+                if (context === 'banner') closeBannerModal();
+                else closeAnnouncementList();
+                return;
+            }
+
+            if (!cta.url) return;
+
+            if (cta.type === 'email') {
+                window.location.href = cta.url;
+                return;
+            }
+
+            window.open(cta.url, '_blank', 'noopener,noreferrer');
+        }
+
+        function createAnnouncementCtaButton(cta, context = 'list') {
+            if (!cta || !cta.label) return null;
+
+            const button = document.createElement('button');
+            button.type = 'button';
+            button.className = 'announcement-cta-btn';
+
+            if (cta.type === 'email') {
+                button.classList.add('is-email');
+                button.textContent = 'Email';
+            } else if (cta.type === 'exit') {
+                button.classList.add('is-exit');
+                button.textContent = 'Exit';
+            } else {
+                button.textContent = cta.label;
+            }
+
+            if (cta.type === 'text') {
+                button.disabled = true;
+            } else {
+                button.addEventListener('click', () => executeAnnouncementCta(cta, context));
+            }
+
+            return button;
+        }
+
+        // --- Announcement List ---
+
+        function openAnnouncementList() {
+            if (!state.announcements || state.announcements.length === 0) return;
+
+            const modal = document.getElementById('announcement-list-modal');
+            const panel = document.getElementById('announcement-list-panel');
+            const content = document.getElementById('announcement-list-content');
+
+            if (!modal || !panel || !content) return;
+
+            content.innerHTML = '';
+            state.announcements.forEach((item) => {
+                const card = document.createElement('article');
+                card.className =
+                    'announcement-item p-4 sm:p-5 rounded-2xl bg-slate-900/55 border border-slate-700/60';
+
+                const topRow = document.createElement('div');
+                topRow.className = 'flex items-start justify-between gap-3 mb-2';
+
+                const title = document.createElement('h4');
+                title.className = 'text-white font-bold text-sm sm:text-base leading-tight';
+                title.textContent = item.title || 'Announcement';
+
+                const date = document.createElement('span');
+                date.className = 'text-[10px] uppercase font-bold text-slate-500 whitespace-nowrap';
+                date.textContent = formatAnnouncementDate(item.date);
+
+                const message = document.createElement('p');
+                message.className = 'text-slate-300 text-xs sm:text-sm leading-relaxed whitespace-pre-line';
+                message.textContent = item.message || '';
+
+                topRow.appendChild(title);
+                topRow.appendChild(date);
+                card.appendChild(topRow);
+                card.appendChild(message);
+
+                const cta = parseAnnouncementCta(item.cta);
+                const ctaButton = createAnnouncementCtaButton(cta, 'list');
+                if (ctaButton) {
+                    ctaButton.classList.add('mt-4', 'w-full');
+                    card.appendChild(ctaButton);
+                }
+
+                content.appendChild(card);
+            });
+
+            modal.classList.remove('hidden');
+            setTimeout(() => {
+                panel.classList.remove('translate-x-full');
+            }, 10);
+
+            document.body.style.overflow = 'hidden';
+            if (els.announcementDot) els.announcementDot.classList.add('hidden');
+        }
+
+        async function fetchAnnouncement() {
+            const isLocalOrigin =
+                window.location.protocol === "file:" ||
+                window.location.origin === "null";
+            try {
+                const json = await apiGet(
+                    { action: 'get_announcement' },
+                    { useJsonp: isLocalOrigin },
+                );
+                
+                console.log("Announcement Response:", json); // Debug log
+
+                if (json && json.success) {
+                    if (json.announcements) {
+                        // New Format (Multiple)
+                        state.banners = Array.isArray(json.banners) ? json.banners : [];
+                        state.announcements = Array.isArray(json.announcements) ? json.announcements : [];
+                    } else if (json.announcement) {
+                        // Legacy Format Fallback (Single)
+                        // Map legacy object to new array format
+                        const legacy = json.announcement;
+                        const item = {
+                            date: legacy.date_announcement || '',
+                            title: legacy.title || '',
+                            message: legacy.message || '',
+                            cta: legacy.cta || '',
+                            activate_banner: isTruthy(legacy.activate_banner),
+                            legacy_mode: true
+                        };
+                        
+                        state.announcements = [item];
+                        state.banners = isTruthy(legacy.activate_banner) ? [item] : [];
+                    } else {
+                        // Success but empty
+                        state.banners = [];
+                        state.announcements = [];
+                    }
+                } else {
+                    console.warn("Announcement Fetch Failed:", json ? json.message : "Unknown error");
+                    state.banners = [];
+                    state.announcements = [];
+                }
+            } catch (err) {
+                console.error("Failed to fetch announcements:", err);
+                state.banners = [];
+                state.announcements = [];
+            } finally {
+                renderAnnouncementTrigger();
+            }
+            return state;
+        }
+
+        function renderAnnouncementTrigger() {
+            if (!els.announcementBtn) return;
+            const count = state.announcements.length;
+            const shouldShow = count > 0;
+            els.announcementBtn.classList.toggle('hidden', !shouldShow);
+
+            if (shouldShow) {
+                els.announcementBtn.setAttribute('title', `${count} Announcement${count > 1 ? 's' : ''}`);
+                if (els.announcementDot) els.announcementDot.classList.remove('hidden');
+            } else {
+                 if (els.announcementDot) els.announcementDot.classList.add('hidden');
+            }
+        }
+
+        // --- Banner / Carousel ---
+
+        function openBannerModal(force = false) {
+            if (!state.banners || state.banners.length === 0) return;
+            
+            const modal = document.getElementById('banner-modal');
+            if (!modal) return;
+
+            renderBannerCarousel();
+            modal.classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+            
+            // Start Auto Slide
+            startBannerAutoSlide();
+        }
+
+        function closeBannerModal() {
+            const modal = document.getElementById('banner-modal');
+            if (modal) modal.classList.add('hidden');
+            
+            const listModal = document.getElementById('announcement-list-modal');
+            // Basic overflow restoration check
+            if (!listModal || listModal.classList.contains('hidden')) {
+                 document.body.style.overflow = '';
+            }
+
+            if (state.bannerInterval) clearInterval(state.bannerInterval);
+        }
+
+        function renderBannerCarousel() {
+            const track = document.getElementById('banner-track');
+            const dotsContainer = document.getElementById('banner-dots');
+            if (!track || !dotsContainer) return;
+
+            track.innerHTML = '';
+            dotsContainer.innerHTML = '';
+            state.currentBannerIndex = 0;
+
+            state.banners.forEach((banner, index) => {
+                const slide = document.createElement('section');
+                slide.className = 'carousel-slide px-5 py-6 sm:px-8 sm:py-9 flex flex-col justify-center text-center';
+
+                const meta = document.createElement('p');
+                meta.className = 'mb-2 text-brand-yellow font-bold text-[11px] uppercase tracking-[0.22em] opacity-85';
+                meta.textContent = formatAnnouncementDate(banner.date) || 'Announcement';
+
+                const title = document.createElement('h3');
+                title.className = 'text-xl sm:text-3xl font-black text-white mb-3 tracking-tight';
+                title.textContent = banner.title || 'Announcement';
+
+                const message = document.createElement('p');
+                message.className = 'text-slate-200 text-sm sm:text-base max-w-xl leading-relaxed mx-auto whitespace-pre-line';
+                message.textContent = banner.message || '';
+
+                slide.appendChild(meta);
+                slide.appendChild(title);
+                slide.appendChild(message);
+
+                const cta = parseAnnouncementCta(banner.cta);
+                const ctaButton = createAnnouncementCtaButton(cta, 'banner');
+                if (ctaButton) {
+                    ctaButton.classList.add('mt-5', 'mx-auto');
+                    slide.appendChild(ctaButton);
+                }
+
+                track.appendChild(slide);
+
+                const dot = document.createElement('div');
+                dot.className = `carousel-dot ${index === 0 ? 'active' : ''}`;
+                dot.onclick = () => showBannerSlide(index);
+                dotsContainer.appendChild(dot);
+            });
+
+            updateBannerTrack();
+        }
+
+        function showBannerSlide(index) {
+            if (!state.banners || state.banners.length === 0) return;
+            if (index < 0) index = state.banners.length - 1;
+            if (index >= state.banners.length) index = 0;
+
+            state.currentBannerIndex = index;
+            updateBannerTrack();
+            
+            // Reset timer on manual interaction
+            startBannerAutoSlide();
+        }
+
+        function nextBannerSlide() {
+            showBannerSlide(state.currentBannerIndex + 1);
+        }
+
+        function updateBannerTrack() {
+            const track = document.getElementById('banner-track');
+            const dots = document.getElementById('banner-dots');
+            if (!track || !dots) return;
+
+            // Slide track
+            track.style.transform = `translateX(-${state.currentBannerIndex * 100}%)`;
+
+            // Update dots
+            const dotEls = dots.children;
+            for (let i = 0; i < dotEls.length; i++) {
+                if (i === state.currentBannerIndex) dotEls[i].classList.add('active');
+                else dotEls[i].classList.remove('active');
+            }
+        }
+
+        function startBannerAutoSlide() {
+            if (state.bannerInterval) clearInterval(state.bannerInterval);
+            state.bannerInterval = setInterval(nextBannerSlide, 5000);
+        }
+
+        function closeAnnouncementList() {
+            const modal = document.getElementById('announcement-list-modal');
+            const panel = document.getElementById('announcement-list-panel');
+            if (modal && panel) {
+                panel.classList.add('translate-x-full');
+                setTimeout(() => {
+                    modal.classList.add('hidden');
+                }, 300);
+            }
+            
+            const bannerModal = document.getElementById('banner-modal');
+             if (!bannerModal || bannerModal.classList.contains('hidden')) {
+                 document.body.style.overflow = '';
+            }
+        }
+
+        function closeAnnouncementModal() {
+            if (els.announcementModal) {
+                els.announcementModal.classList.add('hidden');
+            }
+            const listModal = document.getElementById('announcement-list-modal');
+            const bannerModal = document.getElementById('banner-modal');
+            if (
+                (!listModal || listModal.classList.contains('hidden')) &&
+                (!bannerModal || bannerModal.classList.contains('hidden'))
+            ) {
+                document.body.style.overflow = '';
+            }
+        }
+
         function showLoginError(message) {
             if (!els.loginError) return;
 
@@ -734,6 +1923,12 @@
 
             els.loginError.textContent = message;
             els.loginError.classList.remove('hidden');
+        }
+
+        function handleSearchInput(event) {
+            const nextQuery = String(event?.target?.value || '').trim();
+            state.searchQuery = nextQuery;
+            render();
         }
 
         // --- Auth ---
@@ -761,17 +1956,31 @@
                     isLoggedIn = true;
                     state.currentUser = json.name || email.split('@')[0];
                     state.currentUserEmail = email;
+                    state.searchQuery = '';
+                    state.announcementSeen = false;
                     els.welcomeName.textContent = `${state.currentUser.split(' ')[0]}!`;
 
+                    const announcementPromise = fetchAnnouncement().catch((announcementErr) => {
+                        console.error("Announcement fetch error:", announcementErr);
+                    });
                     fetchClasses().catch((classErr) => {
                         console.error("Class fetch error:", classErr);
                     });
 
                     els.authOverlay.classList.add('opacity-0', 'pointer-events-none');
-                    setTimeout(() => {
+                    setTimeout(async () => {
                         els.authOverlay.style.display = 'none';
                         els.appContainer.classList.remove('opacity-0');
+                        if (els.searchInput) els.searchInput.value = '';
                         render();
+                        await announcementPromise;
+                        
+                        // Open banner if exists
+                        if (state.banners && state.banners.length > 0) {
+                            openBannerModal(true);
+                        } else {
+                            renderAnnouncementTrigger();
+                        }
                     }, 500);
                 } else {
                     showLoginError(
@@ -781,8 +1990,8 @@
                     );
                 }
             } catch (err) {
-                console.error("Login Error:", err);
-                showLoginError(err.message || "Connection error. Please try again.");
+                showLoginError("Terjadi kesalahan. Cek koneksi internet.");
+                console.error(err);
             } finally {
                 if (!isLoggedIn) {
                     submitBtn.innerHTML = originalText;
@@ -846,6 +2055,42 @@
             return pid.replace(/B2C_|B2B_|B2S_/g, "").replace(/_/g, " ");
         }
 
+        function getSearchToken() {
+            return String(state.searchQuery || "").trim().toLowerCase();
+        }
+
+        function matchesSessionSearch(item, token) {
+            if (!token) return true;
+            const stack = [
+                item.topic_title,
+                item.sub_topic_title,
+                item.learning_objective,
+                item.activity_breakdown,
+                item.mastery_focus,
+                item.planet_theme,
+                item.level_id,
+                item.unique_code,
+                item.program_id,
+                item.session_order,
+            ]
+                .map((value) => String(value || "").toLowerCase())
+                .join(" ");
+            return stack.includes(token);
+        }
+
+        function matchesProgramSearch(programId, token) {
+            if (!token) return true;
+            const cleanName = getCleanName(programId);
+            const meta = getMetadata(programId);
+            const programText = `${cleanName} ${meta.category || ""} ${meta.age || ""}`.toLowerCase();
+            if (programText.includes(token)) return true;
+
+            const hasSessionMatch = state.data.some(
+                (item) => item.program_id === programId && matchesSessionSearch(item, token),
+            );
+            return hasSessionMatch;
+        }
+
         // --- Rendering ---
         
         function render() {
@@ -870,16 +2115,38 @@
             }
             // Update sidebar active states
             renderSidebar(); 
+            renderAnnouncementTrigger();
         }
 
         function renderSidebar() {
             els.programList.innerHTML = '';
             
+            const searchToken = getSearchToken();
+            // Filter programs based on search
+            const visiblePrograms = state.programs.filter(p => matchesProgramSearch(p, searchToken));
+
+            if (visiblePrograms.length === 0) {
+                 const emptyState = document.createElement('div');
+                 emptyState.className = "px-4 py-8 text-center";
+                 emptyState.innerHTML = `
+                    <p class="text-slate-400 text-xs mb-3">No matching program.</p>
+                    <button type="button" class="ui-control px-3 py-1.5 rounded-lg text-xs font-bold text-white bg-slate-700 hover:bg-slate-600 transition-colors">Clear Search</button>
+                 `;
+                 const btn = emptyState.querySelector('button');
+                 btn.onclick = () => {
+                     state.searchQuery = '';
+                     if (els.searchInput) els.searchInput.value = '';
+                     render();
+                 };
+                 els.programList.appendChild(emptyState);
+                 return;
+            }
+
             // Group by Category
             const grouped = {};
             const cats = ["C<>deplay", "Game-Dev", "App Lab", "Robo: bit", "Other"];
             
-            state.programs.forEach(p => {
+            visiblePrograms.forEach(p => {
                 const meta = getMetadata(p);
                 const cat = meta.category || "Other";
                 if (!grouped[cat]) grouped[cat] = [];
@@ -902,7 +2169,7 @@
                     const cleanName = getCleanName(p);
                     const colorClass = cleanName.toLowerCase().includes('python') ? 'text-black' : 'text-white';
                     
-                    btn.className = `relative px-4 py-3 text-left rounded-xl text-sm font-bold transition-all duration-300 whitespace-nowrap ${isActive ? 'shadow-lg ' + getShadowColor(p) : 'text-slate-400 hover:text-white hover:bg-white/10'}`;
+                    btn.className = `ui-control relative px-4 py-3 text-left rounded-xl text-sm font-bold transition-all duration-300 whitespace-nowrap ${isActive ? 'text-white shadow-lg sidebar-active-indicator ' + getShadowColor(p) : 'text-slate-300 hover:text-white'}`;
                     
                     let bgHtml = '';
                     if (isActive) {
@@ -922,13 +2189,39 @@
 
         function renderHome() {
             els.programGrid.innerHTML = '';
-            state.programs.forEach((p, idx) => {
+            const searchToken = getSearchToken();
+            const visiblePrograms = state.programs.filter((programId) =>
+                matchesProgramSearch(programId, searchToken),
+            );
+
+            if (visiblePrograms.length === 0) {
+                const emptyCard = document.createElement('div');
+                emptyCard.className = "ui-state col-span-full text-center py-14 animate-fade-in";
+                emptyCard.innerHTML = `
+                    <p class="text-slate-200 font-semibold text-sm mb-1">No matching program.</p>
+                    <p class="text-slate-400 text-xs mb-4">Try another keyword for curriculum, level, or topic.</p>
+                    <button type="button" class="ui-control px-4 py-2 rounded-lg text-xs font-bold text-white">Clear Search</button>
+                `;
+                const clearBtn = emptyCard.querySelector('button');
+                if (clearBtn) {
+                    clearBtn.onclick = () => {
+                        state.searchQuery = '';
+                        if (els.searchInput) els.searchInput.value = '';
+                        render();
+                    };
+                }
+                els.programGrid.appendChild(emptyCard);
+                return;
+            }
+
+            visiblePrograms.forEach((p, idx) => {
                  const meta = getMetadata(p);
                  const cleanName = getCleanName(p);
                  const accent = meta.accent || "from-brand-blue to-blue-600";
+                 const sessionCount = state.data.filter(i => i.program_id === p).length;
                  
                  const div = document.createElement('button');
-                 div.className = "group relative flex flex-col p-6 rounded-3xl bg-[#0F172A]/80 border border-white/5 hover:border-white/20 transition-all text-left overflow-hidden h-48 justify-between animate-fade-in shadow-xl hover:shadow-2xl hover:-translate-y-1";
+                 div.className = "group ui-card ui-card-hover relative flex flex-col p-6 text-left overflow-hidden h-48 justify-between animate-fade-in";
                  div.style.animationDelay = `${0.1 + (idx * 0.05)}s`;
                  div.onclick = () => setProgram(p);
 
@@ -941,7 +2234,10 @@
                              <div class="w-14 h-14 rounded-2xl bg-white/5 border border-white/10 p-2.5 backdrop-blur-md shadow-inner group-hover:scale-110 transition-transform duration-300 flex items-center justify-center">
                                  ${meta.logo ? `<img src="${meta.logo}" alt="${cleanName}" class="w-full h-full object-contain drop-shadow-sm filter brightness-110">` : `<span class="text-2xl font-bold text-white">${cleanName.charAt(0)}</span>`}
                              </div>
-                             ${meta.age ? `<span class="px-2.5 py-1 rounded-lg bg-black/20 border border-white/5 text-[10px] font-bold text-slate-400 group-hover:text-white uppercase tracking-wide backdrop-blur-md transition-colors">${meta.age}</span>` : ''}
+                             <div class="flex items-center gap-2">
+                                 <span class="px-2.5 py-1 rounded-lg bg-brand-blue/20 border border-brand-blue/30 text-[11px] font-bold text-brand-blue uppercase tracking-wide backdrop-blur-md">${sessionCount} Sessions</span>
+                                 ${meta.age ? `<span class="px-2.5 py-1 rounded-lg bg-black/20 border border-white/5 text-[11px] font-bold text-slate-400 group-hover:text-white uppercase tracking-wide backdrop-blur-md transition-colors">${meta.age}</span>` : ''}
+                             </div>
                         </div>
                         
                         <div>
@@ -957,60 +2253,85 @@
             });
         }
         
-        // --- Calendar Logic ---
+        // --- Calendar Logic (Week View) ---
         function renderCalendar() {
             const date = state.currentDate || new Date();
-            const month = date.getMonth();
-            const year = date.getFullYear();
-
-            // Setup
-            const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-            document.getElementById('calendar-month').textContent = `${months[month]} ${year}`;
             
-            // Update Today Date String
-            const now = new Date();
-            const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
-            const todayStr = now.toLocaleDateString('en-US', options);
-            const todayEl = document.getElementById('calendar-today-date');
-            if (todayEl) todayEl.textContent = todayStr;
+            // Find start of week (Sunday)
+            const startOfWeek = new Date(date);
+            startOfWeek.setDate(date.getDate() - date.getDay());
 
-            const firstDay = new Date(year, month, 1).getDay();
-            const daysInMonth = new Date(year, month + 1, 0).getDate();
+            // Update Month Label
+            const endOfWeek = new Date(startOfWeek);
+            endOfWeek.setDate(startOfWeek.getDate() + 6);
+            
+            const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+            const monthLabel = document.getElementById('calendar-month');
+            
+            if (monthLabel) {
+                if (startOfWeek.getMonth() === endOfWeek.getMonth()) {
+                     monthLabel.textContent = `${monthNames[startOfWeek.getMonth()]} ${startOfWeek.getFullYear()}`;
+                } else {
+                     monthLabel.textContent = `${monthNames[startOfWeek.getMonth()]} - ${monthNames[endOfWeek.getMonth()]}`;
+                }
+            }
+
             const daysContainer = document.getElementById('calendar-days');
             if (!daysContainer) return;
             
             daysContainer.innerHTML = '';
+            
+            const dayNames = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+            const today = new Date();
 
-            // Padding
-            for (let i = 0; i < firstDay; i++) {
-                const pad = document.createElement('div');
-                daysContainer.appendChild(pad);
-            }
-
-            // Days
-            for (let i = 1; i <= daysInMonth; i++) {
+            for (let i = 0; i < 7; i++) {
+                const loopDate = new Date(startOfWeek);
+                loopDate.setDate(startOfWeek.getDate() + i);
+                
+                const isToday = isSameDay(loopDate, today);
+                const isSelected = isSameDay(loopDate, date);
+                const hasClasses = getClassesForDate(loopDate).length > 0;
+                
                 const dayEl = document.createElement('div');
-                dayEl.textContent = i;
                 
-                // Base Classes
-                let classes = "h-8 w-8 flex items-center justify-center rounded-lg text-slate-300 mx-auto transition-all cursor-pointer hover:bg-white/10 hover:text-white relative group";
-                
-                // Check for Today
-                if (i === now.getDate() && month === now.getMonth() && year === now.getFullYear()) {
-                    classes += " bg-brand-blue text-white font-bold shadow-lg shadow-brand-blue/30 scale-110 border border-brand-blue";
+                let classes = "flex flex-col items-center justify-center py-2 rounded-xl transition-all cursor-pointer border ";
+                if (isToday) {
+                    classes += "bg-brand-blue border-brand-blue pulse-glow scale-105 z-10 text-white";
+                } else if (isSelected) {
+                     classes += "bg-white/10 border-white/20 text-white ring-1 ring-white/20";
+                } else {
+                    classes += "bg-white/5 border-white/5 hover:bg-white/10 text-slate-400 hover:text-white";
                 }
-
-                dayEl.className = classes;
                 
-                // Optional: Tooltip / Event indicator could go here
+                dayEl.className = classes;
+                dayEl.onclick = () => {
+                    state.currentDate = loopDate;
+                    renderCalendar(); 
+                    renderTodaysClasses();
+                };
+                
+                dayEl.innerHTML = `
+                    <span class="text-[11px] font-bold uppercase mb-0.5 opacity-70 tracking-wider">${dayNames[i]}</span>
+                    <span class="text-sm font-bold">${loopDate.getDate()}</span>
+                    ${hasClasses ? '<span class="w-1.5 h-1.5 rounded-full bg-brand-yellow mt-1 shadow-[0_0_6px_rgba(249,192,19,0.6)]"></span>' : '<span class="w-1.5 h-1.5 mt-1"></span>'}
+                `;
+                
                 daysContainer.appendChild(dayEl);
             }
         }
 
-        function changeMonth(delta) {
+        function changeMonth(delta) { 
+            // Handles Week Change (delta +/- 1 week)
             if (!state.currentDate) state.currentDate = new Date();
-            state.currentDate.setMonth(state.currentDate.getMonth() + delta);
+            state.currentDate.setDate(state.currentDate.getDate() + (delta * 7));
             renderCalendar();
+            renderTodaysClasses();
+        }
+        
+        function isSameDay(d1, d2) {
+             return d1.getDate() === d2.getDate() && 
+                    d1.getMonth() === d2.getMonth() && 
+                    d1.getFullYear() === d2.getFullYear();
         }
 
         function renderLevelTabs() {
@@ -1036,10 +2357,11 @@
                 const theme = levelMap.get(lvl);
                 let label = lvl;
                 if (lvl !== "Trial Class" && theme) label += ` - ${theme}`;
+                const count = items.filter(i => i.level_id === lvl).length;
 
                 const btn = document.createElement('button');
-                btn.className = `px-6 py-2 rounded-full text-xs font-bold uppercase tracking-wider border transition-all whitespace-nowrap ${isActive ? 'bg-brand-yellow text-black border-brand-yellow' : 'bg-white/5 border-white/10 text-slate-400 hover:text-white hover:border-white/30'}`;
-                btn.textContent = label;
+                btn.className = `ui-control px-6 py-2.5 rounded-full text-xs font-bold uppercase tracking-wider transition-all whitespace-nowrap flex items-center gap-2 ${isActive ? 'bg-brand-yellow text-black border-brand-yellow shadow-lg shadow-brand-yellow/20' : 'text-slate-300 hover:text-white'}`;
+                btn.innerHTML = `${label} <span class="${isActive ? 'bg-black/20 text-black' : 'bg-white/10 text-slate-500'} px-1.5 py-0.5 rounded-full text-[11px] font-bold min-w-[20px] text-center">${count}</span>`;
                 btn.onclick = () => setLevel(lvl);
                 els.levelTabs.appendChild(btn);
             });
@@ -1047,14 +2369,23 @@
 
         function renderSessionGrid() {
             els.sessionGrid.innerHTML = '';
+            const searchToken = getSearchToken();
             
             // Filter Data
             const items = state.data
                 .filter(i => i.program_id === state.selectedProgram && i.level_id === state.selectedLevel)
+                .filter(i => matchesSessionSearch(i, searchToken))
                 .sort((a, b) => a.session_order - b.session_order);
 
             if (items.length === 0) {
-                els.sessionGrid.innerHTML = `<div class="text-center text-slate-500 py-10">No sessions found.</div>`;
+                els.sessionGrid.innerHTML = `
+                    <div class="ui-state text-center py-14 flex flex-col items-center animate-fade-in">
+                        <div class="w-16 h-16 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center mb-4">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="text-slate-500"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+                        </div>
+                        <p class="text-slate-400 font-semibold mb-1">No Sessions Available</p>
+                        <p class="text-slate-500 text-sm">${searchToken ? 'No session matched your search keyword.' : "This level doesn't have any sessions yet."}</p>
+                    </div>`;
                 return;
             }
 
@@ -1089,17 +2420,23 @@
                 const gridDiv = document.createElement('div');
                 gridDiv.className = "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6";
                 
-                g.items.forEach(item => {
+                g.items.forEach((item, cardIdx) => {
                     const card = document.createElement('div');
-                    card.className = "group relative h-full bg-[#1e293b]/40 border border-white/10 rounded-3xl p-6 overflow-hidden transition-all duration-300 hover:border-brand-yellow/50 hover:shadow-2xl hover:shadow-brand-yellow/10 cursor-pointer backdrop-blur-sm";
+                    card.className = "group ui-card-soft ui-card-hover relative h-full rounded-3xl p-6 overflow-hidden cursor-pointer animate-fade-in";
+                    card.style.animationDelay = `${cardIdx * 0.05}s`;
                     card.onclick = () => openModal(item);
+                    
+                    const hasLP = item.link_lesson_plan && item.link_lesson_plan !== '—' && item.link_lesson_plan !== '-';
                     
                     card.innerHTML = `
                          <div class="absolute inset-0 bg-gradient-to-br from-brand-yellow/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
                          <div class="relative z-10 flex flex-col h-full">
                             <div class="flex justify-between items-start mb-4">
-                                <div class="min-w-10 w-auto px-3 h-10 rounded-full bg-white/10 border border-white/10 flex items-center justify-center text-blue-100 font-mono text-sm group-hover:bg-brand-yellow group-hover:text-black font-bold transition-all duration-300">
-                                    ${item.session_order}
+                                <div class="flex items-center gap-2">
+                                    <div class="min-w-10 w-auto px-3 h-10 rounded-full bg-white/10 border border-white/10 flex items-center justify-center text-blue-100 font-mono text-sm group-hover:bg-brand-yellow group-hover:text-black font-bold transition-all duration-300">
+                                        ${item.session_order}
+                                    </div>
+                                    ${hasLP ? '<div class="w-2 h-2 rounded-full bg-green-400 shadow-[0_0_6px_rgba(74,222,128,0.5)]" title="Has Lesson Plan"></div>' : ''}
                                 </div>
                                 <div class="p-2 rounded-full bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity -mr-2 -mt-2 text-white">
                                     ${ICONS.chevronRight}
@@ -1371,7 +2708,7 @@
 
         function createHeroBtn(obj) {
             const btn = document.createElement('button');
-            btn.className = `block w-full flex items-center gap-5 p-6 rounded-2xl transition-all duration-300 group border text-left relative overflow-hidden bg-gradient-to-br from-brand-blue to-blue-700 border-white/10 text-white shadow-xl hover:scale-[1.01] hover:shadow-brand-blue/20 ring-1 ring-white/10`;
+            btn.className = `ui-card-hover block w-full flex items-center gap-5 p-6 rounded-2xl transition-all duration-300 group border text-left relative overflow-hidden bg-gradient-to-br from-brand-blue to-blue-700 border-white/10 text-white shadow-xl hover:shadow-brand-blue/20 ring-1 ring-white/10`;
             btn.onclick = () => handleLinkClick(normalizeLink(obj.url));
             
             btn.innerHTML = `
@@ -1394,7 +2731,7 @@
 
         function createMultiLinkGroup(label, links, iconName, variant = "default") {
             const container = document.createElement('div');
-            container.className = `rounded-2xl p-6 transition-all border bg-white/5 border-white/5 hover:bg-white/10 hover:border-white/10 backdrop-blur-sm group`;
+            container.className = `ui-card-soft ui-card-hover rounded-2xl p-6 transition-all group`;
             
             // Header
             const header = document.createElement('div');
@@ -1412,11 +2749,11 @@
             links.forEach(l => {
                 const a = document.createElement('button');
                 // Premium Button Styles
-                let classes = "flex-1 min-w-[140px] px-4 py-3 rounded-xl text-sm font-semibold transition-all flex items-center justify-center gap-2 border shadow-sm ";
+                let classes = "ui-control flex-1 min-w-[140px] px-4 py-3 rounded-xl text-sm font-semibold transition-all flex items-center justify-center gap-2 shadow-sm ";
                 if (variant === "secondary") {
                     classes += "bg-indigo-500/10 hover:bg-indigo-500/20 text-indigo-300 border-indigo-500/20 hover:border-indigo-500/40";
                 } else {
-                    classes += "bg-[#0F172A] hover:bg-brand-blue hover:border-brand-blue text-slate-300 hover:text-white border-white/10 hover:shadow-lg hover:shadow-brand-blue/20";
+                    classes += "bg-[#0F172A]/70 hover:bg-brand-blue hover:border-brand-blue text-slate-300 hover:text-white border-white/10 hover:shadow-lg hover:shadow-brand-blue/20";
                 }
                 a.className = classes;
                 a.title = l.url;
@@ -1469,27 +2806,22 @@
             let items = [];
             
             if (isNumbered) {
-                // Numbered list logic: "1. Item 2. Item" or newline separated
-                // Replace newlines with spaces first to handle weird wrapping, then split by number pattern
                 const normalized = text.replace(/\n/g, ' ');
-                // Look for patterns like "1. ", "2. " and insert a unique delimiter
-                // We use a lookahead or just standard replace
                 const withBreaks = normalized.replace(/(\d+\.\s+)/g, '\n$1');
                 items = withBreaks.split('\n').map(s => s.trim()).filter(Boolean);
             } else {
                 items = text.split(/\n|•/).map(s => s.trim()).filter(Boolean);
             }
 
-            // If numbered, render an Ordered List style, otherwise Unordered
+            // Timeline stepper for numbered (Session Flow)
             if (isNumbered) {
-                 return `<ul class="space-y-2 text-sm">${items.map(i => {
-                     // Check if item starts with a number to bold it or style it
+                 return `<div class="space-y-4">${items.map(i => {
                      const match = i.match(/^(\d+\.)\s*(.*)/);
                      if (match) {
-                         return `<li class="flex gap-2"><span class="text-brand-yellow font-bold min-w-[20px]">${match[1]}</span><span class="text-blue-100">${match[2]}</span></li>`;
+                         return `<div class="timeline-step"><div class="step-dot"></div><div class="py-1"><span class="text-brand-yellow font-bold text-xs uppercase tracking-wider">${match[1]}</span><p class="text-blue-100 text-sm mt-1 leading-relaxed">${match[2]}</p></div></div>`;
                      }
-                     return `<li class="flex gap-2"><span class="text-white/50">•</span><span>${i}</span></li>`;
-                 }).join('')}</ul>`;
+                     return `<div class="timeline-step"><div class="step-dot"></div><div class="py-1 text-sm text-blue-100">${i}</div></div>`;
+                 }).join('')}</div>`;
             }
 
             return `<ul class="space-y-2 text-sm">${items.map(i => `<li class="flex gap-2"><span class="text-white/50">•</span><span>${i}</span></li>`).join('')}</ul>`;
@@ -1556,6 +2888,11 @@
             return dayKeys.includes(targetDay);
         }
 
+        function getClassesForDate(dateObj) {
+            if (!Array.isArray(state.classes) || !dateObj) return [];
+            return state.classes.filter((classItem) => classRunsOnDate(classItem, dateObj));
+        }
+
         // Run
         init();
 
@@ -1566,7 +2903,7 @@
             // Show loading in widget
             const widgetList = document.getElementById('todays-classes-list');
             if (widgetList) {
-                widgetList.innerHTML = `<div class="p-3 bg-black/20 rounded-lg border border-white/5 text-center animate-pulse"><span class="text-xs text-slate-500">Loading...</span></div>`;
+                widgetList.innerHTML = `<div class="skeleton h-16 mb-2"></div><div class="skeleton h-16"></div>`;
             }
 
             try {
@@ -1610,12 +2947,13 @@
             if (!widgetList) return;
 
             const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-            const today = days[state.currentDate.getDay()];
+            const activeDate = new Date();
+            const today = days[activeDate.getDay()];
             
             if (widgetLabel) widgetLabel.innerText = today;
             if (sourceNote) {
                 if (state.classMode === 'offline_only') {
-                    sourceNote.textContent = "Menampilkan kelas Offline yang tersedia saat ini.";
+                    sourceNote.textContent = "Menampilkan kelas aktif Offline untuk hari ini.";
                     sourceNote.classList.remove('hidden');
                 } else if (state.classWarnings && state.classWarnings.length > 0) {
                     sourceNote.textContent = state.classWarnings[0];
@@ -1628,7 +2966,7 @@
 
             if (state.classFetchError) {
                 widgetList.innerHTML = `
-                    <div class="p-4 bg-red-500/10 rounded-lg border border-red-500/30 text-center">
+                    <div class="ui-state p-4 bg-red-500/10 border-red-500/35 text-center">
                         <p class="text-xs text-red-300 font-semibold mb-1">Kelas tidak bisa dimuat</p>
                         <p class="text-[11px] text-red-200/80">${state.classFetchError}</p>
                     </div>
@@ -1637,41 +2975,60 @@
             }
 
             // Filter classes for today
-            const todaysClasses = state.classes.filter((c) => classRunsOnDate(c, state.currentDate));
+            const todaysClasses = getClassesForDate(activeDate);
 
             widgetList.innerHTML = '';
             
             if (todaysClasses.length === 0) {
                 widgetList.innerHTML = `
-                    <div class="p-4 bg-black/20 rounded-lg border border-white/5 text-center">
-                        <p class="text-xs text-slate-400">No active classes scheduled for ${today}.</p>
+                    <div class="ui-state p-6 text-center flex flex-col items-center">
+                        <div class="w-10 h-10 rounded-xl bg-white/5 flex items-center justify-center mb-3">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="text-slate-500"><rect width="18" height="18" x="3" y="4" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                        </div>
+                        <p class="text-sm text-slate-300 font-semibold mb-0.5">Hari ini free.</p>
+                        <p class="text-xs text-slate-500">Tidak ada kelas aktif untuk ${today}.</p>
                     </div>
                 `;
                 return;
             }
 
-            todaysClasses.forEach(c => {
+            todaysClasses.forEach((c, idx) => {
                const meta = getMetadata(c.program || "");
                const cleanName = c.program;
                const accent = meta.accent || "from-slate-700 to-slate-900";
                
+               const accentColors = { 'from-blue-400': '#60a5fa', 'from-orange-400': '#fb923c', 'from-green-500': '#22c55e', 'from-red-500': '#ef4444', 'from-amber-400': '#fbbf24', 'from-blue-500': '#3b82f6', 'from-yellow-400': '#facc15' };
+               const accentKey = Object.keys(accentColors).find(k => accent.includes(k));
+               const borderColor = accentColors[accentKey] || '#475569';
+               
                const item = document.createElement('div');
-               item.className = "flex items-center gap-3 p-3 rounded-xl bg-white/5 hover:bg-white/10 border border-white/5 transition-all group/item";
+               item.className = "ui-card-soft relative p-3 rounded-xl hover:border-white/25 transition-all group/item class-accent-border animate-fade-in";
+               item.style.borderLeftColor = borderColor;
+               item.style.animationDelay = `${idx * 0.05}s`;
+               
                item.innerHTML = `
-                  <div class="w-10 h-10 rounded-lg bg-gradient-to-br ${accent} flex items-center justify-center shadow-lg shrink-0">
-                      ${meta.logo ? `<img src="${meta.logo}" class="w-6 h-6 object-contain brightness-0 invert">` : `<span class="text-xs font-bold text-white">${cleanName.charAt(0)}</span>`}
-                  </div>
-                  <div class="flex-1 min-w-0">
-                      <h4 class="text-xs font-bold text-white truncate">${cleanName}</h4>
-                      <div class="flex items-center gap-2 text-[10px] text-slate-400">
-                          <span class="uppercase tracking-wider">${c.type}</span>
-                          <span class="w-1 h-1 rounded-full bg-slate-600"></span>
-                          <span>${c.level}</span>
+                  <div class="flex items-center gap-3">
+                      <div class="w-9 h-9 rounded-lg bg-gradient-to-br ${accent} flex items-center justify-center shadow-md shrink-0">
+                          ${meta.logo ? `<img src="${meta.logo}" class="w-5 h-5 object-contain brightness-0 invert">` : `<span class="text-[11px] font-bold text-white">${cleanName.charAt(0)}</span>`}
+                      </div>
+                      <div class="flex-1 min-w-0">
+                          <h4 class="text-xs font-bold text-white truncate leading-tight">${cleanName}</h4>
+                          <div class="flex items-center gap-1.5 mt-0.5 text-[11px] text-slate-500">
+                              <span class="text-slate-300 font-medium">${c.level}</span>
+                              <span>•</span>
+                              <span>${c.type}</span>
+                              ${c.time ? `<span>•</span><span class="text-brand-yellow font-semibold">${c.time}</span>` : ''}
+                          </div>
+                      </div>
+                      <div class="flex items-center gap-1.5 shrink-0">
+                          <a href="${c.link}" target="_blank" title="Absensi" class="ui-control w-9 h-9 rounded-lg text-slate-300 hover:text-white flex items-center justify-center transition-all">
+                              <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect x="8" y="2" width="8" height="4" rx="1" ry="1"/></svg>
+                          </a>
+                          <button onclick="openCurriculum('${c.program}', '${c.level}')" title="Buka Kurikulum" class="w-9 h-9 rounded-lg bg-brand-blue/80 hover:bg-brand-blue text-white flex items-center justify-center transition-all shadow-sm shadow-brand-blue/20">
+                              <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+                          </button>
                       </div>
                   </div>
-                  <button onclick="openCurriculum('${c.program}', '${c.level}')" title="Open Curriculum" class="w-8 h-8 rounded-full bg-white/5 hover:bg-brand-blue hover:text-white text-slate-400 flex items-center justify-center transition-all">
-                      <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
-                  </button>
                `;
                widgetList.appendChild(item);
             });
@@ -1693,10 +3050,11 @@
             if (!container) return;
             
             container.innerHTML = '';
+            const allActiveClasses = Array.isArray(state.classes) ? state.classes : [];
 
             if (state.classFetchError) {
                 container.innerHTML = `
-                    <div class="text-center py-20 bg-red-500/10 rounded-3xl border border-red-500/30">
+                    <div class="ui-state text-center py-20 bg-red-500/10 border-red-500/35">
                         <p class="text-red-300 font-semibold mb-2">Data kelas tidak tersedia</p>
                         <p class="text-red-200/80 text-sm">${state.classFetchError}</p>
                     </div>
@@ -1704,23 +3062,23 @@
                 return;
             }
             
-            if (!state.classes || state.classes.length === 0) {
+            if (!allActiveClasses || allActiveClasses.length === 0) {
                  container.innerHTML = `
-                    <div class="text-center py-20 bg-white/5 rounded-3xl border border-white/10">
-                        <p class="text-slate-400">No classes found assigned to your account.</p>
+                    <div class="ui-state text-center py-20">
+                        <p class="text-slate-400">Tidak ada kelas active untuk akun ini.</p>
                         ${state.classMode === 'offline_only' ? '<p class="text-amber-300/90 text-xs mt-2">Offline classes only mode is active.</p>' : ''}
                     </div>
                 `;
                 return;
             }
 
-            state.classes.forEach(c => {
+            allActiveClasses.forEach(c => {
                const meta = getMetadata(c.program || "");
                const cleanName = c.program;
                const accent = meta.accent || "from-slate-700 to-slate-900";
 
                const card = document.createElement('div');
-               card.className = "flex flex-col md:flex-row md:items-center gap-6 p-6 rounded-3xl bg-[#020617]/50 border border-white/10 hover:border-brand-blue/30 transition-all group";
+               card.className = "ui-card-soft ui-card-hover flex flex-col md:flex-row md:items-center gap-6 p-6 rounded-3xl group";
                
                card.innerHTML = `
                     <div class="flex items-center gap-4 flex-1">
@@ -1729,8 +3087,9 @@
                         </div>
                         <div>
                             <div class="flex items-center gap-2 mb-1">
-                                <span class="px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider ${c.type === 'Online' ? 'bg-green-500/20 text-green-400' : 'bg-purple-500/20 text-purple-400'}">${c.type}</span>
-                                <span class="px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider bg-white/5 text-slate-400">${c.day}</span>
+                                <span class="px-2 py-0.5 rounded text-[11px] font-bold uppercase tracking-wider ${c.type === 'Online' ? 'bg-green-500/20 text-green-400' : 'bg-purple-500/20 text-purple-400'}">${c.type}</span>
+                                <span class="px-2 py-0.5 rounded text-[11px] font-bold uppercase tracking-wider bg-white/5 text-slate-400">${c.day}</span>
+                                ${c.time ? `<span class="px-2 py-0.5 rounded text-[11px] font-bold tracking-wider bg-brand-yellow/20 text-brand-yellow border border-brand-yellow/30">Jam ${c.time}</span>` : ''}
                             </div>
                             <h3 class="text-xl font-bold text-white mb-1 group-hover:text-brand-blue transition-colors">${cleanName}</h3>
                             <p class="text-sm text-slate-400">Level: <span class="text-white">${c.level}</span></p>
@@ -1738,7 +3097,7 @@
                     </div>
 
                     <div class="flex items-center gap-3 w-full md:w-auto mt-4 md:mt-0 pt-4 md:pt-0 border-t md:border-t-0 border-white/5">
-                        <a href="${c.link}" target="_blank" class="flex-1 md:flex-none px-4 py-3 rounded-xl bg-white/5 hover:bg-white/10 text-slate-300 hover:text-white text-sm font-bold transition-all flex items-center justify-center gap-2 border border-white/5">
+                        <a href="${c.link}" target="_blank" class="ui-control flex-1 md:flex-none px-4 py-3 rounded-xl text-slate-300 hover:text-white text-sm font-bold transition-all flex items-center justify-center gap-2">
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect x="8" y="2" width="8" height="4" rx="1" ry="1"/></svg>
                             Absensi
                         </a>
@@ -1761,20 +3120,93 @@
             );
             
             if (p) {
-                setProgram(p);
-                setTimeout(() => {
-                   const tabs = document.querySelectorAll('#level-tabs button');
-                   for(let tab of tabs) {
-                       if (tab.innerText.toLowerCase().includes(levelName.toLowerCase())) {
-                           tab.click();
-                           break;
-                       }
-                   }
-                }, 500);
+                state.selectedProgram = p;
+                
+                // Find matching level_id from curriculum data
+                const programItems = state.data.filter(i => i.program_id === p);
+                const levelNorm = levelName.toLowerCase().trim();
+                
+                // Try exact match first, then fuzzy
+                let matchedLevel = programItems.find(i => 
+                    String(i.level_id).toLowerCase().trim() === levelNorm
+                );
+                
+                if (!matchedLevel) {
+                    // Fuzzy: check if level name contains the number, e.g. "Level 3" matches "3"
+                    const levelNum = levelNorm.replace(/[^0-9]/g, '');
+                    if (levelNum) {
+                        matchedLevel = programItems.find(i => {
+                            const lid = String(i.level_id).toLowerCase();
+                            return lid.includes(levelNum) || lid === levelNum;
+                        });
+                    }
+                }
+                
+                if (!matchedLevel) {
+                    // Broader fuzzy: includes match
+                    matchedLevel = programItems.find(i => 
+                        String(i.level_id).toLowerCase().includes(levelNorm) || 
+                        levelNorm.includes(String(i.level_id).toLowerCase())
+                    );
+                }
+                
+                state.selectedLevel = matchedLevel ? matchedLevel.level_id : "Trial Class";
+                render();
             } else {
                 alert("Program not found in curriculum: " + programName);
             }
         }
     </script>
+    <!-- Scroll to Top Button -->
+    <button id="scroll-top-btn" class="scroll-top-btn w-12 h-12 rounded-full bg-brand-blue hover:bg-blue-500 text-white shadow-lg shadow-brand-blue/30 flex items-center justify-center transition-all hover:shadow-brand-blue/50 hover:scale-110" onclick="window.scrollTo({top:0, behavior:'smooth'})" aria-label="Scroll to top">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m18 15-6-6-6 6"/></svg>
+    </button>
+    <!-- Banner Modal (Carousel) -->
+    <div id="banner-modal" class="fixed inset-0 z-50 hidden" role="dialog" aria-modal="true">
+        <div class="absolute inset-0 bg-slate-950/86 backdrop-blur-md transition-opacity" onclick="closeBannerModal()"></div>
+        <div class="absolute inset-0 flex items-center justify-center p-3 sm:p-6">
+             <div class="banner-shell relative w-full max-w-2xl max-h-[calc(100vh-1.5rem)] sm:max-h-[calc(100vh-3rem)] border border-sky-200/20 rounded-[1.6rem] shadow-[0_30px_80px_rgba(2,6,23,0.75)] overflow-hidden">
+                <div class="absolute inset-x-0 top-0 h-24 pointer-events-none bg-gradient-to-b from-sky-400/12 to-transparent"></div>
+                <button onclick="closeBannerModal()" class="absolute top-3 right-3 z-20 p-2 rounded-full border border-slate-500/40 bg-slate-950/70 hover:bg-slate-900 text-slate-200 hover:text-white transition-colors backdrop-blur-md">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                </button>
+
+                <div id="banner-track" class="carousel-track">
+                    <!-- Slides injected by JS -->
+                </div>
+
+                <div class="px-5 sm:px-6 pb-5 sm:pb-6">
+                    <div class="h-px bg-gradient-to-r from-transparent via-slate-500/45 to-transparent"></div>
+                    <div class="mt-4 flex justify-center gap-2 z-10" id="banner-dots">
+                        <!-- Dots injected by JS -->
+                    </div>
+                </div>
+             </div>
+        </div>
+    </div>
+
+    <!-- Announcement List Modal -->
+    <div id="announcement-list-modal" class="fixed inset-0 z-50 hidden" role="dialog" aria-modal="true">
+        <div class="absolute inset-0 bg-slate-900/60 backdrop-blur-sm transition-opacity" onclick="closeAnnouncementList()"></div>
+        <div class="absolute inset-y-0 right-0 w-full max-w-lg bg-slate-950/95 border-l border-slate-700/70 shadow-2xl transform transition-transform duration-300 translate-x-full" id="announcement-list-panel">
+            <div class="flex flex-col h-full">
+                <!-- Header -->
+                <div class="p-5 border-b border-slate-800 flex items-center justify-between bg-slate-900/50 backdrop-blur glass-panel">
+                    <h2 class="text-lg font-bold text-white flex items-center gap-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" class="text-brand-yellow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg>
+                        Announcements
+                    </h2>
+                    <button onclick="closeAnnouncementList()" class="p-2 rounded-lg hover:bg-white/5 text-slate-400 hover:text-white transition-colors">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="M6 6 18 18"/></svg>
+                    </button>
+                </div>
+                
+                <!-- List Content -->
+                <div id="announcement-list-content" class="flex-1 overflow-y-auto p-5 space-y-4 custom-scrollbar">
+                    <!-- Items injected by JS -->
+                </div>
+            </div>
+        </div>
+    </div>
 </body>
 </html>
