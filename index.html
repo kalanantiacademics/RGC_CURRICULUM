@@ -50,8 +50,9 @@
             --accent-teal: #2dd4bf;
             --accent-sky: #38bdf8;
             --accent-sun: #f9c013;
-            --shadow-card: 0 18px 46px rgba(1, 7, 23, 0.46);
-            --shadow-card-hover: 0 26px 64px rgba(1, 7, 23, 0.6);
+            /* Optimized Shadows */
+            --shadow-card: 0 10px 25px -5px rgba(1, 7, 23, 0.4);
+            --shadow-card-hover: 0 20px 40px -5px rgba(1, 7, 23, 0.5);
             --radius-card: 1.5rem;
             --radius-control: 0.95rem;
             --focus-ring: rgba(249, 192, 19, 0.35);
@@ -70,9 +71,8 @@
         body {
             background-color: var(--bg-canvas);
             background-image:
-                radial-gradient(circle at 5% -8%, rgba(45, 212, 191, 0.22), transparent 34%),
-                radial-gradient(circle at 96% 2%, rgba(56, 189, 248, 0.26), transparent 32%),
-                radial-gradient(circle at 70% 102%, rgba(249, 192, 19, 0.18), transparent 34%),
+                radial-gradient(circle at 5% -8%, rgba(45, 212, 191, 0.15), transparent 30%),
+                radial-gradient(circle at 96% 2%, rgba(56, 189, 248, 0.18), transparent 28%),
                 linear-gradient(164deg, #01030d 0%, var(--bg-canvas-soft) 58%, #081c43 100%);
             color: var(--text-primary);
             font-family: 'Outfit', sans-serif;
@@ -85,44 +85,22 @@
             overflow-x: hidden;
         }
 
+        /* Simplified Body Backgrounds */
         body::before {
             content: "";
             position: fixed;
             inset: 0;
             background:
-                radial-gradient(circle at 18% 24%, rgba(45, 212, 191, 0.12), transparent 28%),
-                radial-gradient(circle at 86% 76%, rgba(56, 189, 248, 0.15), transparent 30%),
-                repeating-linear-gradient(90deg, rgba(148, 163, 184, 0.05) 0 1px, transparent 1px 92px),
-                repeating-linear-gradient(0deg, rgba(148, 163, 184, 0.04) 0 1px, transparent 1px 92px);
-            opacity: 0.42;
+                repeating-linear-gradient(90deg, rgba(148, 163, 184, 0.03) 0 1px, transparent 1px 92px),
+                repeating-linear-gradient(0deg, rgba(148, 163, 184, 0.03) 0 1px, transparent 1px 92px);
+            opacity: 0.3;
             pointer-events: none;
             z-index: 0;
         }
 
-        body::after {
-            content: "";
-            position: fixed;
-            inset: 0;
-            background: linear-gradient(180deg, rgba(2, 6, 23, 0) 0%, rgba(2, 6, 23, 0.24) 100%);
-            pointer-events: none;
-            z-index: 0;
-        }
-
-        h1,
-        h2,
-        h3,
-        h4 {
-            font-family: 'Sora', 'Outfit', sans-serif;
-            letter-spacing: -0.01em;
-        }
-
-        p {
-            color: var(--text-secondary);
-        }
-
-        input::placeholder {
-            color: var(--text-muted);
-        }
+        h1, h2, h3, h4 { font-family: 'Sora', 'Outfit', sans-serif; letter-spacing: -0.01em; }
+        p { color: var(--text-secondary); }
+        input::placeholder { color: var(--text-muted); }
 
         :where(button, a, input, textarea, select, [tabindex]):focus-visible {
             outline: 2px solid rgba(249, 192, 19, 0.92);
@@ -135,128 +113,80 @@
             box-shadow: none;
         }
 
-        button,
-        a[role="button"] {
-            min-height: 2.5rem;
-        }
+        button, a[role="button"] { min-height: 2.5rem; }
+        button svg, a svg { pointer-events: none; }
+        .text-\[9px\], .text-\[10px\] { font-size: 0.72rem !important; line-height: 1rem !important; }
 
-        button svg,
-        a svg {
-            pointer-events: none;
-        }
-
-        .text-\[9px\],
-        .text-\[10px\] {
-            font-size: 0.72rem !important;
-            line-height: 1rem !important;
-        }
-
+        /* Optimized Cards */
         .ui-card {
             background:
-                linear-gradient(125deg, rgba(45, 212, 191, 0.08), rgba(15, 32, 63, 0) 26%),
                 linear-gradient(160deg, var(--surface-2), var(--surface-1));
             border: 1px solid var(--border-soft);
             border-radius: var(--radius-card);
             box-shadow: var(--shadow-card);
-            -webkit-backdrop-filter: blur(14px);
-            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(8px);
+            backdrop-filter: blur(8px); /* Reduced from 14px */
         }
 
         .ui-card-soft {
-            background:
-                linear-gradient(180deg, rgba(56, 189, 248, 0.08), rgba(56, 189, 248, 0) 30%),
-                var(--surface-3);
+            background: var(--surface-3);
             border: 1px solid rgba(148, 163, 184, 0.12);
             border-radius: var(--radius-card);
-            box-shadow: 0 10px 30px rgba(2, 6, 23, 0.3);
-            -webkit-backdrop-filter: blur(10px);
-            backdrop-filter: blur(10px);
+            box-shadow: 0 4px 12px rgba(2, 6, 23, 0.2);
+            -webkit-backdrop-filter: blur(5px);
+            backdrop-filter: blur(5px); /* Reduced from 10px */
         }
 
         .ui-card-hover {
-            transition: transform 0.28s ease, border-color 0.28s ease, box-shadow 0.28s ease, background-color 0.28s ease;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            will-change: transform;
         }
 
         .ui-card-hover:hover {
-            transform: translateY(-4px);
-            border-color: var(--border-strong);
+            transform: translateY(-2px);
             box-shadow: var(--shadow-card-hover);
         }
 
         .ui-control {
             border-radius: var(--radius-control);
             border: 1px solid rgba(125, 211, 252, 0.28);
-            background:
-                linear-gradient(180deg, rgba(56, 189, 248, 0.1), rgba(56, 189, 248, 0) 42%),
-                rgba(8, 18, 40, 0.76);
-            transition: all 0.24s ease;
+            background: rgba(8, 18, 40, 0.76);
+            transition: background-color 0.2s ease, border-color 0.2s ease;
         }
 
         .ui-control:hover {
             border-color: rgba(148, 163, 184, 0.45);
-            background: rgba(30, 41, 59, 0.68);
+            background: rgba(30, 41, 59, 0.85);
         }
 
         .ui-state {
             border-radius: 1.25rem;
             border: 1px solid var(--border-soft);
-            background:
-                linear-gradient(180deg, rgba(56, 189, 248, 0.08), rgba(56, 189, 248, 0) 42%),
-                rgba(8, 18, 40, 0.68);
-            box-shadow: 0 12px 30px rgba(2, 6, 23, 0.28);
+            background: rgba(8, 18, 40, 0.75);
+            box-shadow: 0 8px 20px rgba(2, 6, 23, 0.2);
             padding: 1.5rem;
         }
 
-        .ui-state p {
-            margin: 0;
-        }
+        .ui-state p { margin: 0; }
 
         #auth-overlay::before {
             content: "";
             position: absolute;
             inset: 0;
             pointer-events: none;
-            background:
-                linear-gradient(140deg, rgba(56, 189, 248, 0.28), rgba(56, 189, 248, 0) 32%),
-                linear-gradient(340deg, rgba(249, 192, 19, 0.18), rgba(249, 192, 19, 0) 36%);
+            background: linear-gradient(140deg, rgba(56, 189, 248, 0.15), transparent 40%);
         }
 
-        #auth-overlay {
-            padding: 1rem;
-            overflow-y: auto;
-        }
-
-        #auth-overlay .ui-card {
-            max-height: calc(100vh - 2rem);
-            overflow-y: auto;
-        }
+        #auth-overlay { padding: 1rem; overflow-y: auto; }
+        #auth-overlay .ui-card { max-height: calc(100vh - 2rem); overflow-y: auto; }
 
         aside {
-            background:
-                linear-gradient(180deg, rgba(2, 6, 23, 0.98) 0%, rgba(10, 25, 52, 0.94) 100%) !important;
-            border-right-color: rgba(56, 189, 248, 0.22) !important;
+            background: #020617 !important;
+            border-right: 1px solid rgba(56, 189, 248, 0.15);
         }
 
-        aside::after {
-            content: "";
-            position: absolute;
-            right: 0;
-            top: 0;
-            bottom: 0;
-            width: 1px;
-            pointer-events: none;
-            background: linear-gradient(180deg, rgba(45, 212, 191, 0), rgba(45, 212, 191, 0.65), rgba(56, 189, 248, 0));
-        }
-
-        main {
-            background:
-                linear-gradient(180deg, rgba(8, 20, 45, 0.88), rgba(7, 20, 47, 0.8)) !important;
-        }
-
-        header {
-            border-bottom-color: rgba(125, 211, 252, 0.2) !important;
-            box-shadow: 0 8px 24px rgba(2, 6, 23, 0.25);
-        }
+        main { background: #060e21 !important; }
+        header { border-bottom: 1px solid rgba(125, 211, 252, 0.15); box-shadow: 0 4px 12px rgba(2, 6, 23, 0.2); }
 
         #header-title {
             letter-spacing: -0.03em;
@@ -266,15 +196,7 @@
             -webkit-text-fill-color: transparent;
         }
 
-        #home-view::before {
-            content: "";
-            position: absolute;
-            inset: 0;
-            pointer-events: none;
-            background:
-                linear-gradient(145deg, rgba(45, 212, 191, 0.1), rgba(45, 212, 191, 0) 34%),
-                linear-gradient(330deg, rgba(249, 192, 19, 0.1), rgba(249, 192, 19, 0) 30%);
-        }
+        #home-view::before { display: none; } /* Removed complex gradient overlay */
 
         #program-grid > button::after,
         #session-grid .grid > .group::after {
@@ -283,132 +205,72 @@
             inset: 1px;
             border-radius: inherit;
             pointer-events: none;
-            border: 1px solid rgba(255, 255, 255, 0.08);
-        }
-
-        #session-grid .grid > .group::before {
-            content: "";
-            position: absolute;
-            top: 0;
-            left: 1rem;
-            right: 1rem;
-            height: 2px;
-            border-radius: 999px;
-            background: linear-gradient(90deg, rgba(45, 212, 191, 0), rgba(45, 212, 191, 0.95), rgba(56, 189, 248, 0.95), rgba(56, 189, 248, 0));
-            opacity: 0.78;
-        }
-
-        #calendar-widget h3,
-        #todays-classes-widget h3 {
-            letter-spacing: 0.02em;
+            border: 1px solid rgba(255, 255, 255, 0.05);
         }
 
         #calendar-days > div {
             min-height: 3.9rem;
             border-radius: 1rem !important;
-            backdrop-filter: blur(8px);
-        }
-
-        #today-day-label,
-        #modal-level {
-            box-shadow: 0 0 0 1px rgba(249, 192, 19, 0.35), 0 8px 18px rgba(249, 192, 19, 0.25);
+            backdrop-filter: none !important; /* Performance fix */
+            background-color: rgba(255,255,255,0.03);
         }
 
         #modal-main-content {
             border-color: rgba(56, 189, 248, 0.2) !important;
-            background: rgba(4, 10, 26, 0.62) !important;
-        }
-
-        #modal-main-content .modal-tab {
-            border: 1px solid transparent;
-        }
-
-        #modal-main-content .modal-tab:hover {
-            border-color: rgba(125, 211, 252, 0.28);
+            background: rgba(4, 10, 26, 0.95) !important; /* Opaque background is faster */
         }
 
         /* Utilities */
         .glass {
-            background: rgba(15, 23, 42, 0.6);
-            -webkit-backdrop-filter: blur(20px);
-            backdrop-filter: blur(20px);
+            background: rgba(15, 23, 42, 0.9);
+            -webkit-backdrop-filter: blur(10px);
+            backdrop-filter: blur(10px);
             border: 1px solid rgba(255, 255, 255, 0.08);
-            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.36);
         }
 
         .glass-panel {
-            background: linear-gradient(135deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.01) 100%);
-            -webkit-backdrop-filter: blur(10px);
-            backdrop-filter: blur(10px);
+            background: rgba(255, 255, 255, 0.03);
+            -webkit-backdrop-filter: blur(5px);
+            backdrop-filter: blur(5px);
             border: 1px solid rgba(255, 255, 255, 0.05);
-            box-shadow: inset 0 0 32px rgba(0, 0, 0, 0.2);
         }
 
         .text-glow {
-            text-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
         }
 
         /* Scrollbar Hiding */
-        .hide-scrollbar::-webkit-scrollbar {
-            display: none;
-        }
+        .hide-scrollbar::-webkit-scrollbar { display: none; }
+        .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
 
-        .hide-scrollbar {
-            -ms-overflow-style: none;
-            scrollbar-width: none;
-        }
-
-        .custom-scrollbar {
-            scrollbar-width: thin;
-            scrollbar-color: rgba(148, 163, 184, 0.8) rgba(15, 23, 42, 0.3);
-        }
-
-        .custom-scrollbar::-webkit-scrollbar {
-            width: 10px;
-            height: 10px;
-        }
-
-        .custom-scrollbar::-webkit-scrollbar-track {
-            background: rgba(15, 23, 42, 0.35);
-            border-radius: 9999px;
-        }
-
-        .custom-scrollbar::-webkit-scrollbar-thumb {
-            background: linear-gradient(180deg, rgba(148, 163, 184, 0.95), rgba(71, 85, 105, 0.9));
-            border-radius: 9999px;
-            border: 2px solid transparent;
-            background-clip: padding-box;
-        }
-
-        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-            background: linear-gradient(180deg, rgba(203, 213, 225, 1), rgba(100, 116, 139, 0.95));
-            border: 2px solid transparent;
-            background-clip: padding-box;
-        }
+        .custom-scrollbar { scrollbar-width: thin; scrollbar-color: rgba(148, 163, 184, 0.8) rgba(15, 23, 42, 0.3); }
+        .custom-scrollbar::-webkit-scrollbar { width: 8px; height: 8px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: rgba(15, 23, 42, 0.35); border-radius: 4px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: rgba(148, 163, 184, 0.6); border-radius: 4px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: rgba(148, 163, 184, 0.8); }
 
         /* Animations */
         @keyframes float {
             0% { transform: translateY(0px); }
-            50% { transform: translateY(-14px); }
+            50% { transform: translateY(-8px); }
             100% { transform: translateY(0px); }
         }
 
         .animate-float {
-            animation: float 7s ease-in-out infinite;
+            animation: float 6s ease-in-out infinite;
             will-change: transform;
         }
 
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(12px); }
+            from { opacity: 0; transform: translateY(10px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
         .animate-fade-in {
-            animation: fadeIn 0.42s ease-out forwards;
-            will-change: opacity, transform;
+            animation: fadeIn 0.3s ease-out forwards;
         }
 
-        /* Smooth Gradient Animation (Welcome Name) */
+        /* Reduced Gradient Animation */
         @keyframes gradientShift {
             0% { background-position: 0% 50%; }
             50% { background-position: 100% 50%; }
@@ -417,174 +279,58 @@
 
         .animate-gradient {
             background-size: 200% 200%;
-            animation: gradientShift 5s ease-in-out infinite;
+            animation: gradientShift 8s ease-in-out infinite; /* Slower animation */
         }
 
-        /* Login Button Shimmer */
-        .btn-shimmer {
-            position: relative;
-            overflow: hidden;
-        }
-
+        /* Login Button Shimmer - Optimized */
+        .btn-shimmer { position: relative; overflow: hidden; }
         .btn-shimmer::after {
             content: '';
             position: absolute;
-            top: -50%;
-            left: -60%;
-            width: 40%;
-            height: 200%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.15), transparent);
+            top: 0; left: -100%;
+            width: 50%; height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
             transform: skewX(-20deg);
-            transition: none;
-            pointer-events: none;
         }
-
-        .btn-shimmer:hover::after {
-            animation: btnShimmer 0.7s ease forwards;
-        }
-
-        @keyframes btnShimmer {
-            to { left: 130%; }
-        }
-
-        /* Skeleton Loading Shimmer */
-        @keyframes skeletonShimmer {
-            0% { background-position: -200% 0; }
-            100% { background-position: 200% 0; }
-        }
+        .btn-shimmer:hover::after { transition: left 0.7s ease; left: 150%; }
 
         .skeleton {
-            background: linear-gradient(90deg, rgba(255, 255, 255, 0.03) 25%, rgba(255, 255, 255, 0.08) 50%, rgba(255, 255, 255, 0.03) 75%);
-            background-size: 200% 100%;
-            animation: skeletonShimmer 1.8s ease infinite;
+            background: rgba(255, 255, 255, 0.05);
             border-radius: 0.75rem;
         }
-
-        /* Pulsing Glow (Calendar Today) */
-        @keyframes pulseGlow {
-            0%, 100% { box-shadow: 0 0 8px rgba(38, 94, 155, 0.4), 0 4px 12px rgba(38, 94, 155, 0.2); }
-            50% { box-shadow: 0 0 16px rgba(38, 94, 155, 0.5), 0 4px 16px rgba(38, 94, 155, 0.35); }
-        }
-
-        .pulse-glow {
-            animation: pulseGlow 2.5s ease-in-out infinite;
-        }
-
-        /* Sidebar Active Indicator */
-        .sidebar-active-indicator {
-            position: relative;
-        }
+        
+        /* Remove expensive pulse glow for better performance */
+        .pulse-glow { box-shadow: 0 0 10px rgba(38, 94, 155, 0.4); }
 
         .sidebar-active-indicator::before {
             content: '';
             position: absolute;
-            left: 0;
-            top: 50%;
-            transform: translateY(-50%);
-            width: 4px;
-            height: 60%;
+            left: 0; top: 10%;
+            width: 3px; height: 80%;
+            background: #F9C013;
             border-radius: 0 4px 4px 0;
-            background: linear-gradient(180deg, #F9C013, #FD8024);
-            box-shadow: 0 0 12px rgba(249, 192, 19, 0.4);
-        }
-
-        /* Tab Sliding Indicator */
-        .tab-container {
-            position: relative;
         }
 
         .tab-indicator {
-            position: absolute;
-            bottom: 0;
-            height: 3px;
-            background: linear-gradient(90deg, #F9C013, #FD8024);
-            border-radius: 3px 3px 0 0;
-            transition: left 0.3s ease, width 0.3s ease;
-            box-shadow: 0 0 8px rgba(249, 192, 19, 0.5);
+            position: absolute; bottom: 0; height: 3px;
+            background: #F9C013;
+            transition: left 0.2s ease, width 0.2s ease;
         }
 
-        /* Timeline Stepper */
-        .timeline-step {
-            position: relative;
-            padding-left: 2.5rem;
-        }
-
-        .timeline-step::before {
-            content: '';
-            position: absolute;
-            left: 10px;
-            top: 28px;
-            bottom: -8px;
-            width: 2px;
-            background: linear-gradient(180deg, rgba(38, 94, 155, 0.3), transparent);
-        }
-
-        .timeline-step:last-child::before {
-            display: none;
-        }
-
-        .timeline-step .step-dot {
-            position: absolute;
-            left: 4px;
-            top: 6px;
-            width: 14px;
-            height: 14px;
-            border-radius: 50%;
-            background: #265E9B;
-            border: 3px solid #0F172A;
-            box-shadow: 0 0 0 2px rgba(38, 94, 155, 0.3), 0 0 10px rgba(38, 94, 155, 0.2);
-        }
-
-        /* Scroll Fade Gradient */
-        .scroll-fade-container {
-            position: relative;
-        }
-
+        /* Scroll Fade Gradient - Simplified */
         .scroll-fade-container::after {
             content: '';
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            height: 40px;
+            position: absolute; bottom: 0; left: 0; right: 0; height: 30px;
             background: linear-gradient(transparent, rgba(30, 41, 59, 0.95));
             pointer-events: none;
-            border-radius: 0 0 1.5rem 1.5rem;
-            z-index: 1;
         }
-
-        /* Login Input Focus Animation */
-        .input-icon-animated {
-            transition: all 0.3s ease;
-        }
-
-        .group:focus-within .input-icon-animated {
-            transform: translateY(-50%) scale(1.12);
-            filter: drop-shadow(0 0 7px rgba(38, 94, 155, 0.55));
-        }
-
-        /* Class Card Left Accent */
-        .class-accent-border {
-            border-left: 3px solid transparent;
-            transition: border-color 0.3s ease;
-        }
-
-        /* Star Twinkle (Login Background) */
-        @keyframes twinkle {
-            0%, 100% { opacity: 0.2; transform: scale(1); }
-            50% { opacity: 0.75; transform: scale(1.35); }
-        }
-
+        
+        /* Reduce star animation load */
         .star {
-            position: absolute;
-            width: 3px;
-            height: 3px;
-            background: white;
-            border-radius: 50%;
-            animation: twinkle var(--duration, 3s) ease-in-out infinite;
-            animation-delay: var(--delay, 0s);
-            pointer-events: none;
+            position: absolute; width: 2px; height: 2px; background: white; border-radius: 50%;
+            opacity: 0.4;
         }
+
 
         /* Scroll to Top Button */
         .scroll-top-btn {
@@ -822,7 +568,7 @@
 
             <div class="text-center mb-10 relative z-10">
                 <div class="w-20 h-20 mx-auto mb-6 bg-white/5 rounded-2xl flex items-center justify-center border border-white/10 shadow-inner backdrop-blur-md">
-                    <img src="https://cdn-web-2.ruangguru.com/landing-pages/assets/545c0426-169c-406f-8775-93afcacef50a.png" alt="Kalananti" class="h-10 object-contain drop-shadow-md">
+                    <img src="https://cdn-web-2.ruangguru.com/landing-pages/assets/545c0426-169c-406f-8775-93afcacef50a.png" alt="Kalananti" class="h-10 object-contain drop-shadow-md" loading="lazy" decoding="async">
                 </div>
                 <h2 class="text-3xl font-black text-white mb-3 tracking-tight">Kalananti Curriculum Command</h2>
                 <p class="text-slate-400 text-sm font-medium">Masuk untuk akses kurikulum, sesi kelas, dan resource pengajar.</p>
@@ -857,7 +603,7 @@
         <!-- Sidebar (Desktop) -->
         <aside class="hidden md:flex w-64 bg-[#0F172A]/95 border-r border-white/10 p-6 overflow-y-auto z-20 shrink-0 flex-col h-screen sticky top-0">
             <div class="mb-8 pl-2">
-                <img src="https://uob-1328237036.cos.ap-singapore.myqcloud.com//file-uploader/images/94907efd-30d9-49af-8e62-aa4aee51ad33.png" alt="RG Coding" class="h-16 object-contain mb-4 drop-shadow-md brightness-110">
+                <img src="https://uob-1328237036.cos.ap-singapore.myqcloud.com//file-uploader/images/94907efd-30d9-49af-8e62-aa4aee51ad33.png" alt="RG Coding" class="h-16 object-contain mb-4 drop-shadow-md brightness-110" loading="lazy" decoding="async">
             </div>
 
             <!-- Program List -->
@@ -867,7 +613,7 @@
 
             <!-- Sidebar Decor -->
             <div class="relative mt-auto flex justify-center pointer-events-none">
-                 <img src="https://cdn-web-2.ruangguru.com/landing-pages/assets/41512315-979e-43c3-b6b8-5ba139b687f8.png" alt="Decor" class="w-48 opacity-80 drop-shadow-lg">
+                 <img src="https://cdn-web-2.ruangguru.com/landing-pages/assets/41512315-979e-43c3-b6b8-5ba139b687f8.png" alt="Decor" class="w-48 opacity-80 drop-shadow-lg" loading="lazy" decoding="async">
             </div>
             
             <!-- Report Issue Button -->
@@ -914,7 +660,7 @@
                         <span id="announcement-dot" class="hidden absolute top-1 right-1 w-2.5 h-2.5 rounded-full bg-brand-yellow shadow-[0_0_8px_rgba(249,192,19,0.9)]"></span>
                     </button>
                     <div class="h-8 w-px bg-white/10 mx-2 hidden md:block"></div>
-                    <img src="https://cdn-web-2.ruangguru.com/landing-pages/assets/545c0426-169c-406f-8775-93afcacef50a.png" alt="Kalananti" class="h-12 md:h-14 object-contain drop-shadow-md">
+                    <img src="https://cdn-web-2.ruangguru.com/landing-pages/assets/545c0426-169c-406f-8775-93afcacef50a.png" alt="Kalananti" class="h-12 md:h-14 object-contain drop-shadow-md" loading="lazy" decoding="async">
                 </div>
             </header>
 
@@ -929,10 +675,10 @@
                     </div>
 
                     <!-- Rocket -->
-                    <img src="https://cdn-web-2.ruangguru.com/landing-pages/assets/6efdf045-19f7-4d90-8a14-cf797238f73d.png" alt="Rocket" class="absolute top-10 left-10 md:left-20 w-32 md:w-64 z-0 opacity-0 md:opacity-60 drop-shadow-[0_0_30px_rgba(253,128,36,0.5)] animate-float pointer-events-none">
+                    <img src="https://cdn-web-2.ruangguru.com/landing-pages/assets/6efdf045-19f7-4d90-8a14-cf797238f73d.png" alt="Rocket" class="absolute top-10 left-10 md:left-20 w-32 md:w-64 z-0 opacity-0 md:opacity-60 drop-shadow-[0_0_30px_rgba(253,128,36,0.5)] animate-float pointer-events-none" loading="lazy" decoding="async">
 
                     <!-- Character -->
-                    <img src="https://cdn-web-2.ruangguru.com/landing-pages/assets/555e14a0-4087-4d33-9c20-4d822bef5dac.png" alt="Character" class="absolute bottom-10 right-10 md:right-20 w-48 md:w-80 z-0 opacity-100 animate-fade-in pointer-events-none" style="animation-delay: 0.2s">
+                    <img src="https://cdn-web-2.ruangguru.com/landing-pages/assets/555e14a0-4087-4d33-9c20-4d822bef5dac.png" alt="Character" class="absolute bottom-10 right-10 md:right-20 w-48 md:w-80 z-0 opacity-100 animate-fade-in pointer-events-none" style="animation-delay: 0.2s" loading="lazy" decoding="async">
 
                     <div class="relative z-10 w-full max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-8">
                          
@@ -1182,6 +928,7 @@
                                     </div>
                                 </div>
 
+                                <div id="modal-rubric-container" class="hidden"></div>
                                 <div id="modal-tools-hero"></div>
                                 
                                 <div id="modal-tools-list" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-4"></div>
@@ -1755,6 +1502,27 @@
             return state;
         }
 
+        async function fetchRubric() {
+             if (state.rubrics && state.rubrics.length > 0) return state.rubrics;
+             
+             try {
+                const json = await apiGet({ action: 'get_rubric' });
+                console.log("Rubric Response:", json);
+                
+                if (json.success && Array.isArray(json.rubrics)) {
+                    state.rubrics = json.rubrics;
+                    console.log(`Loaded ${state.rubrics.length} rubric items.`);
+                } else {
+                    state.rubrics = [];
+                    console.warn("Rubric fetch returned success=false or no items.", json);
+                }
+             } catch (e) {
+                 console.error("Failed to fetch rubric:", e);
+                 state.rubrics = [];
+             }
+             return state.rubrics;
+        }
+
         function renderAnnouncementTrigger() {
             if (!els.announcementBtn) return;
             const count = state.announcements.length;
@@ -1768,6 +1536,7 @@
                  if (els.announcementDot) els.announcementDot.classList.add('hidden');
             }
         }
+        
 
         // --- Banner / Carousel ---
 
@@ -2232,7 +2001,7 @@
                     <div class="relative z-10 flex flex-col h-full justify-between">
                         <div class="flex justify-between items-start">
                              <div class="w-14 h-14 rounded-2xl bg-white/5 border border-white/10 p-2.5 backdrop-blur-md shadow-inner group-hover:scale-110 transition-transform duration-300 flex items-center justify-center">
-                                 ${meta.logo ? `<img src="${meta.logo}" alt="${cleanName}" class="w-full h-full object-contain drop-shadow-sm filter brightness-110">` : `<span class="text-2xl font-bold text-white">${cleanName.charAt(0)}</span>`}
+                                 ${meta.logo ? `<img src="${meta.logo}" alt="${cleanName}" class="w-full h-full object-contain drop-shadow-sm filter brightness-110" loading="lazy" decoding="async">` : `<span class="text-2xl font-bold text-white">${cleanName.charAt(0)}</span>`}
                              </div>
                              <div class="flex items-center gap-2">
                                  <span class="px-2.5 py-1 rounded-lg bg-brand-blue/20 border border-brand-blue/30 text-[11px] font-bold text-brand-blue uppercase tracking-wide backdrop-blur-md">${sessionCount} Sessions</span>
@@ -2627,6 +2396,19 @@
 
              // 1. Hero: Lesson Plan (Single Link, Primary)
              els.modalToolsHero.innerHTML = '';
+             
+             // --- RUBRIC LOGIC ---
+             const rubricContainer = document.getElementById('modal-rubric-container');
+             if (rubricContainer) {
+                 rubricContainer.innerHTML = '';
+                 rubricContainer.classList.add('hidden');
+                 
+                 const order = parseInt(item.session_order);
+                 if (order === 4 || order === 8) {
+                     renderRubricInModal(item, rubricContainer, order);
+                 }
+             }
+             
              if (item.link_lesson_plan && item.link_lesson_plan !== "—" && item.link_lesson_plan !== "-") {
                  els.modalToolsHero.innerHTML = `
                     <h3 class="text-blue-200/50 font-bold uppercase tracking-wider text-xs mb-4">Primary Guide</h3>
@@ -2657,11 +2439,16 @@
                  if (links.length === 0) return;
                  // Special check for Rubric visibility
                  if (g.label.includes("Rubric")) {
-                     const is12 = item.session_order == 12;
+                     const order = parseInt(item.session_order);
+                     const is12 = order === 12;
                      const isTrial = String(item.level_id).toUpperCase().includes("TRIAL") || String(item.session_order).toUpperCase() === "TRIAL";
-                     if (!is12 && !isTrial) return;
+                     const isRubricSession = order === 4 || order === 8;
+
+                     if (!is12 && !isTrial && !isRubricSession) return;
+                     
                      if (is12) g.label = "Student Report Form";
                      if (isTrial) g.label = "Form Observation Rubric";
+                     if (isRubricSession) g.label = "Rubric Reference File";
                  }
 
                  const groupEl = createMultiLinkGroup(g.label, links, g.icon, g.variant);
@@ -2683,6 +2470,170 @@
                  const groupEl = createMultiLinkGroup(g.label, links, g.icon);
                  els.modalAssetsList.appendChild(groupEl);
              });
+        }
+
+        async function renderRubricInModal(session, container, order) {
+             console.log(`Rendering Rubric for: Program=${session.program_id}, Level=${session.level_id}, Session=${order}`);
+
+             if (!state.rubrics) {
+                 container.innerHTML = '<div class="text-center p-4"><svg class="animate-spin h-5 w-5 text-brand-yellow mx-auto" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg></div>';
+                 container.classList.remove('hidden');
+                 await fetchRubric();
+             }
+             
+             if (!state.rubrics || state.rubrics.length === 0) {
+                 console.warn("Rubric data is empty.");
+                 container.innerHTML = '<div class="text-center text-slate-500 text-xs p-4">Rubric data not found.</div>';
+                 container.classList.remove('hidden');
+                 return;
+             }
+ 
+             const relevantRubrics = state.rubrics.filter(r => {
+                 // Match Program
+                 let cleanProg = session.program_id.toLowerCase().trim();
+                 let rProg = r.program.toLowerCase().trim();
+                 
+                 // Normalize Program Names
+                 if(cleanProg.includes('scratchjr')) cleanProg = 'scratchjr';
+                 if(cleanProg.includes('scratch') && !cleanProg.includes('jr')) cleanProg = 'scratch';
+                 if(cleanProg.includes('roblox')) cleanProg = 'roblox';
+                 if(cleanProg.includes('python')) cleanProg = 'python';
+                 if(cleanProg.includes('minecraft')) cleanProg = 'minecraft';
+                 if(cleanProg.includes('app inventor')) cleanProg = 'app inventor';
+                 
+                 if(rProg.includes('scratchjr')) rProg = 'scratchjr';
+                 if(rProg.includes('scratch') && !rProg.includes('jr')) rProg = 'scratch';
+                 if(rProg.includes('roblox')) rProg = 'roblox';
+                 if(rProg.includes('python')) rProg = 'python';
+                 if(rProg.includes('minecraft')) rProg = 'minecraft';
+                 if(rProg.includes('app inventor')) rProg = 'app inventor';
+ 
+                 const progMatch = cleanProg === rProg;
+                 
+                 // Match Level
+                 const normalizeLevel = (s) => String(s).toLowerCase().replace(/level/g, '').replace(/[^0-9]/g, '').trim();
+                 
+                 let cleanLevel = normalizeLevel(session.level_id); 
+                 let rLevel = normalizeLevel(r.level);
+                 
+                 const levelMatch = cleanLevel === rLevel;
+                 
+                 // Match Meeting
+                 let rangeMatch = false;
+                 // Robust range check
+                 const rangeNums = r.meeting_range.match(/\d+/g);
+                 if (rangeNums && rangeNums.length >= 2) {
+                     const start = parseInt(rangeNums[0]);
+                     const end = parseInt(rangeNums[1]);
+                     if (order >= start && order <= end) rangeMatch = true;
+                 } else if (r.meeting_range.includes(String(order))) {
+                     rangeMatch = true;
+                 }
+ 
+                 return progMatch && levelMatch && rangeMatch;
+             });
+             
+             console.log(`Found ${relevantRubrics.length} matching rubric items.`);
+ 
+             if (relevantRubrics.length === 0) {
+                 console.log("No matching rubrics found. Checking first 3 available:", state.rubrics.slice(0,3));
+                 container.innerHTML = '<div class="text-center text-slate-500 text-xs p-4">No rubric guide found for this specific program/level/session.</div>';
+                 return;
+             }
+
+             // Sort by Score (1-5)
+             relevantRubrics.sort((a, b) => a.score - b.score);
+
+             // Render
+             let html = `
+                <div class="ui-card-soft p-6 rounded-2xl border border-brand-yellow/30 bg-brand-yellow/5 mb-8">
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="p-2 rounded-lg bg-brand-yellow/20 text-brand-yellow">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><path d="M16 13H8"/><path d="M16 17H8"/><path d="M10 9H8"/></svg>
+                        </div>
+                        <div>
+                            <h4 class="font-bold text-white text-lg">Teacher Observation Rubric</h4>
+                            <p class="text-xs text-brand-yellow/80 font-bold uppercase tracking-wider">Guide for Session ${order}</p>
+                        </div>
+                    </div>
+                    
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left border-collapse">
+                            <thead>
+                                <tr class="border-b border-white/10 text-xs text-slate-400 uppercase tracking-wider">
+                                    <th class="py-3 px-4 font-bold text-center w-16">Score</th>
+                                    <th class="py-3 px-4 font-bold">Activity Observation</th>
+                                    <th class="py-3 px-4 font-bold">Learning Engagement</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-white/5 text-sm text-slate-300">
+             `;
+
+             relevantRubrics.forEach(r => {
+                 html += `
+                    <tr class="hover:bg-white/5 transition-colors">
+                        <td class="py-3 px-4 text-center font-bold text-white bg-white/5">${r.score}</td>
+                        <td class="py-3 px-4 leading-relaxed">${r.obs_activity}</td>
+                        <td class="py-3 px-4 leading-relaxed">${r.obs_engagement}</td>
+                    </tr>
+                 `;
+             });
+
+             html += `
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                     <div class="mt-4 pt-4 border-t border-white/10 flex items-start gap-2">
+                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-brand-yellow mt-0.5 shrink-0"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+                         <div>
+                             <span class="text-xs font-bold text-brand-yellow uppercase tracking-wide">Focus Activity:</span>
+                             <span class="text-sm text-slate-300 ml-1">${relevantRubrics[0] ? relevantRubrics[0].focus : ''}</span>
+                         </div>
+                     </div>
+                     
+                     <div class="mt-6 p-4 rounded-xl bg-blue-900/10 border border-blue-500/20">
+                        <div class="flex items-start gap-3">
+                            <div class="p-2 rounded-lg bg-blue-500/10 text-blue-300 shrink-0">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+                            </div>
+                            <div class="space-y-4 w-full">
+                                <div>
+                                    <h5 class="text-sm font-bold text-blue-100 mb-1">Instruksi Pengisian Absen</h5>
+                                    <div class="space-y-4">
+                                        <p class="text-xs text-blue-200/70 leading-relaxed">
+                                            Nilai dari rubrik ini dimasukkan ke dalam <strong>Absen (Form Observasi)</strong> pada bagian <strong>Observasi</strong>.
+                                        </p>
+                                        
+                                        <!-- Image Reference (No Zoom) -->
+                                        <div class="relative w-full">
+                                            <img src="https://cdn-web.ruangguru.com/file-uploader/cd58099e-bedb-4c4d-8b7b-17639b598720.png" loading="lazy" class="w-full rounded-lg border border-white/10 shadow-lg" alt="Contoh Pengisian Absen">
+                                        </div>
+
+                                        <!-- Teacher Note Warning -->
+                                        <div class="bg-red-500/10 border border-red-500/20 rounded-lg p-3 flex gap-3">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-red-400 shrink-0 mt-0.5"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+                                            <div>
+                                                <h6 class="text-xs font-bold text-red-200 mb-1">PENTING: Catatan Guru (Optional)</h6>
+                                                <p class="text-[11px] text-red-200/70 leading-relaxed">
+                                                    Catatan ini akan <strong>langsung masuk ke report card dan dibaca oleh orang tua</strong>. 
+                                                    Mohon gunakan kalimat yang baik, sopan, dan enak dibaca.
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <p class="text-[10px] text-blue-300/50 pt-2 border-t border-blue-500/10 italic">
+                                    Jika ada pertanyaan tentang penilaian, silakan hubungi tim <strong>Academic & Operation</strong>.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+             `;
+             
+             container.innerHTML = html;
+             container.classList.remove('hidden');
         }
 
         // Parse "Label: URL; Label2: URL2" or just "URL"
@@ -3009,7 +2960,7 @@
                item.innerHTML = `
                   <div class="flex items-center gap-3">
                       <div class="w-9 h-9 rounded-lg bg-gradient-to-br ${accent} flex items-center justify-center shadow-md shrink-0">
-                          ${meta.logo ? `<img src="${meta.logo}" class="w-5 h-5 object-contain brightness-0 invert">` : `<span class="text-[11px] font-bold text-white">${cleanName.charAt(0)}</span>`}
+                          ${meta.logo ? `<img src="${meta.logo}" class="w-5 h-5 object-contain brightness-0 invert" loading="lazy" decoding="async">` : `<span class="text-[11px] font-bold text-white">${cleanName.charAt(0)}</span>`}
                       </div>
                       <div class="flex-1 min-w-0">
                           <h4 class="text-xs font-bold text-white truncate leading-tight">${cleanName}</h4>
@@ -3083,7 +3034,7 @@
                card.innerHTML = `
                     <div class="flex items-center gap-4 flex-1">
                         <div class="w-16 h-16 rounded-2xl bg-gradient-to-br ${accent} flex items-center justify-center shadow-lg shrink-0 group-hover:scale-110 transition-transform duration-300">
-                             ${meta.logo ? `<img src="${meta.logo}" class="w-8 h-8 object-contain brightness-0 invert">` : `<span class="text-xl font-bold text-white">${cleanName.charAt(0)}</span>`}
+                             ${meta.logo ? `<img src="${meta.logo}" class="w-8 h-8 object-contain brightness-0 invert" loading="lazy" decoding="async">` : `<span class="text-xl font-bold text-white">${cleanName.charAt(0)}</span>`}
                         </div>
                         <div>
                             <div class="flex items-center gap-2 mb-1">
