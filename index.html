@@ -544,7 +544,63 @@
                 scroll-behavior: auto !important;
             }
         }
+
+        .reduce-motion *,
+        .reduce-motion *::before,
+        .reduce-motion *::after {
+            animation-duration: 0.01ms !important;
+            animation-iteration-count: 1 !important;
+            transition-duration: 0.01ms !important;
+            scroll-behavior: auto !important;
+        }
+
+        .low-perf .ui-card,
+        .low-perf .ui-card-soft,
+        .low-perf .glass,
+        .low-perf .glass-panel,
+        .low-perf #auth-overlay .absolute.inset-0,
+        .low-perf #modal-main-content,
+        .low-perf header {
+            -webkit-backdrop-filter: none !important;
+            backdrop-filter: none !important;
+            background-color: rgba(15, 23, 42, 0.98) !important;
+        }
+
+        .low-perf .animate-float,
+        .low-perf .animate-fade-in,
+        .low-perf .animate-gradient,
+        .low-perf .pulse-glow {
+            animation: none !important;
+            transform: none !important;
+            opacity: 1 !important;
+        }
+
+        .low-perf .star,
+        .low-perf .btn-shimmer::after {
+            display: none !important;
+        }
     </style>
+    
+    <!-- Performance Check Script -->
+    <script>
+        (function() {
+            try {
+                var isLowPerf = false;
+                if (navigator.hardwareConcurrency && navigator.hardwareConcurrency < 4) {
+                    isLowPerf = true;
+                }
+                if (navigator.deviceMemory && navigator.deviceMemory < 4) {
+                    isLowPerf = true;
+                }
+                if (isLowPerf) {
+                    document.documentElement.classList.add('reduce-motion', 'low-perf');
+                    console.log("Low performance device detected, animations disabled.");
+                }
+            } catch (e) {
+                console.error(e);
+            }
+        })();
+    </script>
 </head>
 <body class="selection:bg-brand-yellow/30">
 
