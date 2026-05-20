@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="id" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Peringatan - Kalananti</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;700;800&family=Space+Grotesk:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Space Grotesk', 'sans-serif'],
+                        display: ['Orbitron', 'sans-serif'],
+                    },
+                    colors: {
+                        'k-blue': '#265E9B',
+                        'k-blue-d': '#1A4576',
+                        'k-yellow': '#F9C013',
+                        'k-yellow-d': '#D9A40A',
+                        'k-green': '#339D9D',
+                    }
+                }
+            }
+        }
+    </script>
+    <script>
+        (() => {
+            const saved = localStorage.getItem('kalanantiTheme');
+            document.documentElement.setAttribute('data-theme', (saved === 'light' || saved === 'dark') ? saved : 'light');
+        })();
+    </script>
+    <style>
+        :root {
+            --bg: #e8f2ff;
+            --bg2: #dbeeff;
+            --sky: #cfe5ff;
+            --nebula1: rgba(38,94,155,0.10);
+            --nebula2: rgba(249,192,19,0.10);
+            --card: rgba(255,255,255,0.94);
+            --card-b: rgba(180,215,255,0.85);
+            --text: #1a4576;
+            --text-heading: #265E9B;
+            --muted: #4d7daf;
+            --stars: 0.12;
+        }
+        
+        html[data-theme="dark"] {
+            --bg: #06101f;
+            --bg2: #0d1e3e;
+            --sky: #0a1830;
+            --nebula1: rgba(82,188,255,0.18);
+            --nebula2: rgba(249,192,19,0.15);
+            --card: rgba(14,30,60,0.82);
+            --card-b: rgba(140,190,255,0.22);
+            --text: #ddeeff;
+            --text-heading: #f9c013;
+            --muted: #8aadd8;
+            --stars: 0.45;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'Space Grotesk', sans-serif;
+            background:
+                radial-gradient(circle at 10% 10%, var(--nebula1), transparent 36%),
+                radial-gradient(circle at 88% 12%, var(--nebula2), transparent 32%),
+                linear-gradient(160deg, var(--bg) 0%, var(--bg2) 50%, var(--sky) 100%);
+            background-attachment: fixed;
+            color: var(--text);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+            position: relative;
+        }
+
+        body::before {
+            content: "";
+            position: fixed; inset: 0;
+            pointer-events: none; z-index: -20;
+            opacity: var(--stars);
+            background-image:
+                radial-gradient(circle at 14% 24%, rgba(255,255,255,0.9) 0 1px, transparent 1.6px),
+                radial-gradient(circle at 78% 68%, rgba(255,255,255,0.75) 0 1px, transparent 1.5px),
+                radial-gradient(circle at 56% 38%, rgba(255,255,255,0.60) 0 1px, transparent 1.4px);
+            background-size: 250px 250px, 320px 320px, 210px 210px;
+            animation: starDrift 200s linear infinite;
+        }
+
+        @keyframes starDrift { to { transform: translate3d(-120px, 70px, 0); } }
+
+        .planet-card {
+            background: var(--card);
+            border: 1.5px solid var(--card-b);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border-radius: 2rem;
+            box-shadow: 0 20px 40px -10px rgba(0,0,0,0.1);
+        }
+
+        .heading-text {
+            color: var(--text-heading);
+        }
+
+        .alert-box {
+            background: rgba(249,192,19,0.1);
+            border-left: 4px solid #F9C013;
+            border-radius: 0.5rem 1rem 1rem 0.5rem;
+            padding: 1.5rem;
+        }
+
+        .edge-layer {
+            position: fixed; inset: 0;
+            pointer-events: none; z-index: -10;
+            overflow: hidden;
+        }
+        
+        .edge-planet {
+            position: absolute; margin: 0;
+            pointer-events: none; display: block;
+            opacity: 0.60;
+        }
+
+        html[data-theme="dark"] .alert-box {
+            background: rgba(255,255,255,0.03);
+            border-color: rgba(255,255,255,0.1);
+            border-left-color: #F9C013;
+        }
+        
+        html[data-theme="dark"] .msg-box {
+            background: rgba(14,30,60,0.82);
+            border-color: rgba(140,190,255,0.22);
+            color: var(--text);
+        }
+    </style>
+</head>
+<body>
+    <div class="edge-layer">
+        <img src="https://cdn-web-2.ruangguru.com/landing-pages/assets/e77f536b-e591-4ba8-b5b8-f5b2a3d3b33b.png" class="edge-planet" style="top:8%; left:0; width:min(26vw,190px);" alt="">
+        <img src="https://cdn-web-2.ruangguru.com/landing-pages/assets/5f93f855-0466-47b3-ba85-bbaabbad7a2e.png" class="edge-planet" style="bottom:10%; right:0; width:min(30vw,240px);" alt="">
+    </div>
+
+    <div class="planet-card p-8 md:p-12 max-w-3xl w-full text-center border-t-8 border-k-yellow">
+        <div class="mb-6 flex justify-center">
+            <span class="text-6xl animate-bounce">⚠️</span>
+        </div>
+        
+        <h1 class="font-display font-black text-3xl md:text-4xl mb-6 heading-text">
+            Wah kamu ga baca pengumuman ya Kaka MT Kalananti??
+        </h1>
+        
+        <p class="text-lg md:text-xl mb-6 font-medium">
+            Kan udah pernah di-announce kalau link ini udah ga dibuka lagi 😅
+        </p>
+        
+        <div class="alert-box text-left mb-8 mx-auto max-w-2xl">
+            <p class="font-bold mb-4 flex items-center gap-2">
+                <span class="text-2xl">📌</span> Coba cek lagi di pengumuman:
+            </p>
+            <div class="flex justify-center mb-2">
+                <img src="https://roboguru-forum-cdn.ruangguru.com//image/20c1ee47-09a4-405e-af32-e3f249602095.png" alt="Pengumuman" class="rounded-xl shadow-md border-2 border-k-yellow max-w-full h-auto">
+            </div>
+        </div>
+
+        <div class="bg-blue-50 border border-blue-200 rounded-xl p-6 mb-8 text-blue-900 mx-auto max-w-2xl msg-box">
+            <p class="text-lg font-bold mb-2">Sekarang kita ga pake link ini lagi ya!</p>
+            <p class="text-lg mb-4">Kita udah pake link:</p>
+            <a href="https://www.kalananti.id/curriculum-dashboard" class="inline-block bg-k-blue text-white font-bold px-6 py-3 rounded-full hover:bg-k-blue-d transition-all shadow-lg hover:scale-105 transform">
+                www.kalananti.id/curriculum-dashboard
+            </a>
+        </div>
+
+        <p class="text-md md:text-lg mb-8 font-medium" style="color: var(--muted);">
+            Yuk mulai perhatikan pengumuman dari tim Academic, kalo kamu belum masuk ke grup ini silahkan hubungi team Teacher & Ops Kalananti ya.
+        </p>
+        
+        <p class="font-display font-bold text-xl text-k-yellow-d">
+            Semangat mengajar! 🚀
+        </p>
+    </div>
+</body>
+</html>
